@@ -1,0 +1,17 @@
+# Opcional: refaz o build todo dia para a lista "Atividade recente no GitHub" ficar atualizada.
+# Precisa do segredo VERCEL_DEPLOY_HOOK (Settings > Secrets and variables > Actions no GitHub).
+name: Atualizar site
+on:
+  schedule:
+    - cron: '17 9 * * *' # todo dia às 6h17 (horário de Brasília)
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar novo deploy na Vercel
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "Segredo VERCEL_DEPLOY_HOOK não configurado, nada a fazer."; exit 0; fi
+          curl -fsS -X POST "$HOOK" > /dev/null
