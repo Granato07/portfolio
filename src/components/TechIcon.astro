@@ -1,0 +1,37 @@
+---
+import * as si from 'simple-icons';
+import { tecnologias } from '../data/comum';
+
+interface Props {
+  nome: string;
+  size?: number;
+  class?: string;
+}
+const { nome, size = 22, class: className } = Astro.props;
+const info = tecnologias[nome];
+const icone = info?.icone ? (si as unknown as Record<string, { path: string }>)[info.icone] : undefined;
+const sigla = info?.sigla ?? nome.replace(/[^A-Za-z0-9#+]/g, '').slice(0, 3).toUpperCase();
+---
+{icone ? (
+  <svg class:list={['tech-icon', className]} width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d={icone.path} />
+  </svg>
+) : (
+  <span class:list={['tech-sigla', className]} style={`--s:${size}px`} aria-hidden="true">{sigla}</span>
+)}
+
+<style>
+  .tech-sigla {
+    display: inline-grid;
+    place-items: center;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 6px;
+    border: 1.5px solid currentColor;
+    font-family: var(--font-mono);
+    font-size: calc(var(--s) * 0.34);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+</style>

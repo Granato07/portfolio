@@ -1,0 +1,258 @@
+---
+import Icon from './Icon.astro';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const e = c.experiencia;
+---
+<section id="experiencia" class="section">
+  <div class="wrap">
+    <header class="section-header reveal" data-visto>
+      <h2>{e.titulo}</h2>
+      <p>{e.subtitulo}</p>
+    </header>
+
+    <ol class="linha" data-visto>
+      {e.itens.map((item, i) => (
+        <li class:list={['marco reveal', i % 2 === 0 ? 'esq' : 'dir']} data-anim={i % 2 === 0 ? 'left' : 'right'}>
+          <span class:list={['no', { 'no-atual': item.atual }]} aria-hidden="true"></span>
+          <article class="card" data-brilho>
+            <span class="card-glyph" aria-hidden="true"><Icon name={item.icone} size={92} /></span>
+            <header class="card-head">
+              <span class="card-icone"><Icon name={item.icone} size={20} /></span>
+              <div>
+                <h3>{item.titulo}</h3>
+                <p class="org">{item.organizacao}</p>
+              </div>
+              {item.atual ? <span class="badge badge-atual">{c.ui.atual}</span> : <span class="badge">{item.tipo}</span>}
+            </header>
+
+            <ul class="meta">
+              <li><Icon name="calendar" size={15} />{item.periodo}</li>
+              {item.local && <li><Icon name="map-pin" size={15} />{item.local}</li>}
+              {item.modalidade && <li><Icon name="building-2" size={15} />{item.modalidade}</li>}
+            </ul>
+
+            <p class="desc">{item.descricao}</p>
+
+            <h4>{e.atividadesRotulo}</h4>
+            <ul class="atividades">
+              {item.atividades.map((a) => <li>{a}</li>)}
+            </ul>
+
+            <h4>{e.tagsRotulo}</h4>
+            <ul class="tags">
+              {item.tags.map((t) => <li class="chip">{t}</li>)}
+            </ul>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .linha {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    max-width: 1040px;
+    margin-inline: auto;
+    padding-left: 34px;
+  }
+  .linha::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 9px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, transparent, var(--accent) 8%, var(--accent-line) 70%, transparent);
+    transform-origin: top;
+    transition: transform 2.2s var(--ease-out);
+  }
+  :global(.anima) .linha:not(.visto)::before {
+    transform: scaleY(0);
+  }
+  .no {
+    transition: transform 0.6s var(--ease-out) 0.35s;
+  }
+  :global(.anima) .marco.reveal:not(.is-in) .no {
+    transform: scale(0);
+  }
+  .marco {
+    position: relative;
+  }
+  .no {
+    position: absolute;
+    left: -34px;
+    top: 34px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 5px var(--bg);
+  }
+  .no::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .no-atual {
+    box-shadow:
+      0 0 0 5px var(--bg),
+      0 0 0 10px rgb(139 92 246 / 0.18);
+  }
+
+  @media (min-width: 900px) {
+    .linha {
+      padding-left: 0;
+      gap: 0;
+    }
+    .linha::before {
+      left: 50%;
+      translate: -50% 0;
+    }
+    .marco {
+      width: calc(50% - 44px);
+    }
+    .marco + .marco {
+      margin-top: -64px;
+    }
+    .marco.dir {
+      margin-left: auto;
+    }
+    .marco.esq .no {
+      left: auto;
+      right: -54px;
+    }
+    .marco.dir .no {
+      left: -54px;
+    }
+  }
+
+  .card {
+    position: relative;
+    overflow: hidden;
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition:
+      border-color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .card:hover {
+    border-color: var(--accent-line);
+  }
+  .card-glyph {
+    position: absolute;
+    right: -16px;
+    bottom: -18px;
+    color: var(--accent);
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .card-head {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .card-head > div {
+    flex: 1;
+    min-width: 0;
+  }
+  .card-icone {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-m);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+  .card h3 {
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+  .org {
+    margin-top: 2px;
+    color: var(--accent-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .badge {
+    flex: none;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-2);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-atual {
+    border-color: rgb(74 222 128 / 0.35);
+    background: rgb(74 222 128 / 0.1);
+    color: var(--ok);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 18px;
+    color: var(--text-3);
+    font-size: 0.86rem;
+  }
+  .meta li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .desc {
+    margin-top: 14px;
+    color: var(--text-2);
+  }
+  .card h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    font-weight: 650;
+    color: var(--text);
+  }
+  .atividades {
+    display: grid;
+    gap: 8px;
+    color: var(--text-2);
+    font-size: 0.93rem;
+    line-height: 1.55;
+  }
+  .atividades li {
+    position: relative;
+    padding-left: 18px;
+  }
+  .atividades li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+</style>

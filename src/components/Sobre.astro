@@ -1,0 +1,242 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import GithubCard from './GithubCard.astro';
+import { perfil } from '../data/comum';
+import { foto } from '../lib/fotos';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const img = foto(perfil.foto);
+---
+<section id="sobre" class="section section-alt">
+  <div class="wrap">
+    <header class="section-header reveal" data-visto>
+      <h2>{c.sobre.titulo}</h2>
+      <p>{c.sobre.subtitulo}</p>
+    </header>
+
+    <div class="sobre">
+      <figure class="retrato reveal" data-anim="left">
+        <div class="moldura">
+          {img ? (
+            <Image src={img} alt={c.sobre.fotoAlt} widths={[400, 640, 880]} sizes="(min-width: 1024px) 440px, 90vw" loading="lazy" />
+          ) : (
+            <div class="retrato-vazio" aria-hidden="true">
+              <span>{perfil.iniciais}</span>
+            </div>
+          )}
+        </div>
+        <figcaption class="retrato-tag">
+          <Icon name="map-pin" size={15} />
+          {c.sobre.fatos[0].valor}
+        </figcaption>
+      </figure>
+
+      <div class="sobre-texto reveal" data-anim="right" style="--d: 120ms">
+        {c.sobre.paragrafos.map((p) => <p>{p}</p>)}
+
+        <ul class="focos">
+          {c.sobre.focos.map((f, i) => (
+            <li class="reveal" data-anim="zoom" style={`--d: ${300 + i * 90}ms`}>
+              <span class="foco-icone"><Icon name={f.icone} size={20} /></span>
+              <span class="foco-titulo">{f.titulo}</span>
+              <span class="foco-texto">{f.texto}</span>
+            </li>
+          ))}
+        </ul>
+
+        <dl class="fatos">
+          {c.sobre.fatos.slice(1).map((f) => (
+            <div>
+              <dt>{f.rotulo}</dt>
+              <dd>{f.valor}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="acoes">
+          <a class="btn btn-primary" href={perfil.curriculo[c.lang]} download>
+            <Icon name="download" size={17} />
+            {c.ui.baixarCv}
+          </a>
+          <a class="btn btn-secondary" href="#contato">
+            <Icon name="mail" size={17} />
+            {c.sobre.ctaContato}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <GithubCard c={c} />
+  </div>
+</section>
+
+<style>
+  .sobre {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .sobre {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: 72px;
+    }
+  }
+
+  .retrato {
+    position: relative;
+    isolation: isolate;
+    width: min(460px, calc(100% - 18px));
+    margin-inline: auto;
+  }
+  .moldura {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-width: 100%;
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .retrato::before {
+    content: '';
+    position: absolute;
+    inset: 18px -18px -18px 18px;
+    border-radius: var(--r-xl);
+    border: 1px solid var(--accent-line);
+    z-index: -1;
+  }
+  .moldura :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .retrato-vazio {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 30% 20%, rgb(139 92 246 / 0.35), transparent 55%),
+      radial-gradient(circle at 80% 90%, rgb(168 85 247 / 0.2), transparent 50%),
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--surface);
+  }
+  .retrato-vazio span {
+    font-size: clamp(5rem, 14vw, 8.5rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    background: linear-gradient(160deg, #ddd6fe, #8b5cf6 60%, #6d28d9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .retrato-tag {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 550;
+  }
+  .retrato-tag :global(.icon) {
+    color: var(--accent-text);
+  }
+
+  .sobre-texto {
+    display: grid;
+    gap: 18px;
+    color: var(--text-2);
+    font-size: 1.04rem;
+  }
+  .sobre-texto > p:first-child {
+    color: var(--text);
+    font-size: 1.16rem;
+  }
+  .focos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .focos li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 14px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    transition:
+      border-color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .focos li:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-2px);
+  }
+  .foco-icone {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-m);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+  .foco-titulo {
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .foco-texto {
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--text-3);
+  }
+  @media (max-width: 560px) {
+    .focos {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .fatos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 32px;
+    padding-top: 6px;
+  }
+  .fatos dt {
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+  .fatos dd {
+    color: var(--text);
+    font-weight: 550;
+    font-size: 0.95rem;
+  }
+  .acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+</style>

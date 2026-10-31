@@ -1,0 +1,63 @@
+---
+import TechIcon from './TechIcon.astro';
+
+const itens = ['Node.js', 'TypeScript', 'Express', 'SQLite', 'Vitest', 'Playwright', 'Docker', 'GitHub Actions', 'Git', 'Postman', 'Python', 'Drizzle ORM', 'Claude', 'Gemini'];
+---
+<div class="marquee" aria-hidden="true">
+  <div class="faixa">
+    {[0, 1].map(() => (
+      <ul>
+        {itens.map((i) => (
+          <li>
+            <TechIcon nome={i} size={20} />
+            <span>{i}</span>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    padding-block: 22px;
+    border-block: 1px solid var(--border);
+    background: var(--bg-alt);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .faixa {
+    display: flex;
+    width: max-content;
+    animation: desliza 48s linear infinite;
+  }
+  .marquee:hover .faixa {
+    animation-play-state: paused;
+  }
+  ul {
+    display: flex;
+    gap: 44px;
+    padding-right: 44px;
+  }
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-3);
+    font-weight: 550;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  @keyframes desliza {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faixa {
+      animation: none;
+    }
+  }
+</style>

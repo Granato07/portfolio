@@ -1,0 +1,434 @@
+---
+import Icon from './Icon.astro';
+import { jsonColorido } from '../lib/json';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const rotas = Object.keys(c.console.rotas);
+const inicial = rotas[0];
+const linhas = jsonColorido(c.console.rotas[inicial]);
+const dados = {
+  rotas: c.console.rotas,
+  naoEncontrada: c.console.naoEncontrada,
+  cafe: c.console.cafe,
+  arremesso: c.console.arremesso,
+  enviando: c.console.enviando,
+};
+---
+<div class="console" data-console data-config={JSON.stringify(dados)} data-inicial={inicial}>
+  <div class="c-top" aria-hidden="true">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="c-title">daniel-api</span>
+    <span class="c-live"><b></b>online</span>
+  </div>
+
+  <form class="c-request" data-form aria-label={c.console.rotulo}>
+    <span class="c-method">GET</span>
+    <label class="c-url">
+      <span class="sr-only">{c.console.rotulo}</span>
+      <input name="rota" value={inicial} autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" data-input />
+    </label>
+    <button class="c-send" type="submit">
+      <Icon name="send" size={15} />
+      <span>{c.console.enviar}</span>
+    </button>
+  </form>
+
+  <div class="c-routes" role="group" aria-label={c.console.rotasDisponiveis}>
+    {rotas.map((r) => (
+      <button type="button" class="c-route" data-rota={r} aria-pressed={r === inicial ? 'true' : 'false'}>
+        {r.replace('/v1', '')}
+      </button>
+    ))}
+  </div>
+
+  <div class="c-response" aria-live="polite" aria-busy="false" data-response>
+    <div class="c-meta">
+      <span class="c-status" data-status data-ok>200 OK</span>
+      <span class="c-sep" aria-hidden="true"></span>
+      <span data-tempo>34 ms</span>
+      <span class="c-sep" aria-hidden="true"></span>
+      <span>application/json</span>
+    </div>
+    <pre class="c-body" data-body tabindex="0"><code>{linhas.map((l) => <span class="c-line" set:html={l} />)}</code></pre>
+  </div>
+  <p class="c-foot">{c.console.rodape}</p>
+</div>
+
+<style>
+  .console {
+    position: relative;
+    background: var(--code-bg);
+    color: var(--code-text);
+    border: 1px solid var(--code-line);
+    border-radius: var(--r-xl);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.05) inset,
+      0 40px 80px -40px rgb(0 0 0 / 0.8),
+      0 0 0 1px rgb(139 92 246 / 0.12);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    overflow: hidden;
+  }
+
+  .c-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--code-bar);
+    border-bottom: 1px solid var(--code-line);
+    color: var(--code-dim);
+    font-size: 0.75rem;
+  }
+  .dots {
+    display: flex;
+    gap: 7px;
+  }
+  .dots i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ff5f57;
+  }
+  .dots i:nth-child(2) {
+    background: #febc2e;
+  }
+  .dots i:nth-child(3) {
+    background: #28c840;
+  }
+  .c-title {
+    flex: 1;
+    text-align: center;
+    margin-right: 54px;
+  }
+  .c-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--code-ok);
+  }
+  .c-live b {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--code-ok);
+    box-shadow: 0 0 0 3px rgb(74 222 128 / 0.18);
+  }
+  @media (max-width: 520px) {
+    .c-title {
+      margin-right: 0;
+    }
+  }
+
+  .c-request {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 14px 10px;
+  }
+  .c-method {
+    flex: none;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: rgb(74 222 128 / 0.1);
+    color: var(--code-ok);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .c-url {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--code-line);
+    border-radius: 9px;
+    background: rgb(255 255 255 / 0.02);
+    cursor: text;
+    transition: border-color 0.2s var(--ease);
+  }
+  .c-url:focus-within {
+    border-color: var(--code-accent);
+  }
+  .c-url input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--code-text);
+    font-family: var(--font-mono);
+    font-size: inherit;
+    padding: 0;
+  }
+  .c-send {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient(180deg, #8350f0, #7c3aed);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.2s var(--ease);
+  }
+  .c-send:hover {
+    filter: brightness(1.12);
+  }
+  .c-send:focus-visible,
+  .c-route:focus-visible {
+    outline: 2px solid var(--code-accent);
+    outline-offset: 2px;
+  }
+
+  .c-routes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 14px 14px;
+    border-bottom: 1px solid var(--code-line);
+  }
+  .c-route {
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--code-line);
+    background: transparent;
+    color: var(--code-dim);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition:
+      color 0.2s var(--ease),
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+  .c-route:hover {
+    color: var(--code-text);
+    border-color: #3a3a4a;
+  }
+  .c-route[aria-pressed='true'] {
+    color: #ede9fe;
+    border-color: rgb(167 139 250 / 0.5);
+    background: rgb(139 92 246 / 0.14);
+  }
+
+  .c-response {
+    padding: 14px 16px 16px;
+  }
+  .c-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    color: var(--code-dim);
+    margin-bottom: 12px;
+    font-size: 0.75rem;
+  }
+  .c-sep {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--code-line);
+  }
+  .c-status {
+    font-weight: 700;
+    color: var(--code-err);
+  }
+  .c-status[data-ok] {
+    color: var(--code-ok);
+  }
+  .c-status[data-pending] {
+    color: var(--code-dim);
+  }
+  .c-body {
+    margin: 0;
+    height: 268px;
+    overflow: auto;
+    line-height: 1.75;
+    white-space: pre;
+    scrollbar-width: thin;
+    scrollbar-color: var(--code-line) transparent;
+  }
+  .c-body:focus-visible {
+    outline: 1px dashed var(--code-dim);
+    outline-offset: 4px;
+  }
+  .c-body :global(.c-line) {
+    display: block;
+  }
+  .c-body :global(.c-line.is-new) {
+    animation: linha 0.25s var(--ease) both;
+  }
+  @keyframes linha {
+    from {
+      opacity: 0;
+      transform: translateX(-6px);
+    }
+  }
+  .c-body :global(.j-key) {
+    color: var(--code-key);
+  }
+  .c-body :global(.j-str) {
+    color: var(--code-str);
+  }
+  .c-body :global(.j-num) {
+    color: var(--code-num);
+  }
+  .c-body :global(.j-bool) {
+    color: var(--code-bool);
+  }
+  .c-foot {
+    padding: 11px 16px 13px;
+    border-top: 1px solid var(--code-line);
+    color: var(--code-dim);
+    font-size: 0.72rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 520px) {
+    .console {
+      font-size: 0.74rem;
+    }
+    .c-send span {
+      display: none;
+    }
+    .c-body {
+      height: 250px;
+    }
+  }
+</style>
+
+<script>
+  import { jsonColorido } from '../lib/json';
+
+  interface Config {
+    rotas: Record<string, unknown>;
+    naoEncontrada: { mensagem: string; chaveErro: string; chaveRota: string; chaveRotas: string };
+    cafe: Record<string, unknown>;
+    arremesso: Record<string, string>;
+    enviando: string;
+  }
+
+  const raiz = document.querySelector<HTMLElement>('[data-console]');
+  if (raiz) {
+    const cfg = JSON.parse(raiz.dataset.config ?? '{}') as Config;
+    const form = raiz.querySelector<HTMLFormElement>('[data-form]')!;
+    const input = raiz.querySelector<HTMLInputElement>('[data-input]')!;
+    const status = raiz.querySelector<HTMLElement>('[data-status]')!;
+    const tempo = raiz.querySelector<HTMLElement>('[data-tempo]')!;
+    const corpo = raiz.querySelector<HTMLElement>('[data-body] code')!;
+    const resposta = raiz.querySelector<HTMLElement>('[data-response]')!;
+    const chips = [...raiz.querySelectorAll<HTMLButtonElement>('[data-rota]')];
+    const semAnimacao = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer: number | undefined;
+    let digitando: number | undefined;
+    const placar = { tentativas: 0, acertos: 0 };
+
+    const normalizar = (valor: string) => {
+      let r = valor.trim().toLowerCase().replace(/\s+/g, '').replace(/\/+$/, '');
+      if (!r.startsWith('/')) r = `/${r}`;
+      if (!r.startsWith('/v1')) r = `/v1${r}`;
+      return r;
+    };
+
+    const responder = (rota: string): { codigo: number; texto: string; dados: unknown } => {
+      if (rota in cfg.rotas) return { codigo: 200, texto: 'OK', dados: cfg.rotas[rota] };
+      if (rota === '/v1/cafe' || rota === '/v1/coffee') return { codigo: 418, texto: "I'm a teapot", dados: cfg.cafe };
+      if (rota === '/v1/arremesso' || rota === '/v1/shot') {
+        const a = cfg.arremesso;
+        const cesta = Math.random() < 0.45;
+        placar.tentativas++;
+        if (cesta) placar.acertos++;
+        return {
+          codigo: 200,
+          texto: 'OK',
+          dados: {
+            [a.chaveResultado]: cesta ? a.acertou : a.errou,
+            [a.chaveTentativas]: placar.tentativas,
+            [a.chaveAcertos]: placar.acertos,
+            [a.chaveAproveitamento]: `${Math.round((placar.acertos / placar.tentativas) * 100)}%`,
+          },
+        };
+      }
+      const n = cfg.naoEncontrada;
+      return { codigo: 404, texto: 'Not Found', dados: { [n.chaveErro]: n.mensagem, [n.chaveRota]: rota, [n.chaveRotas]: Object.keys(cfg.rotas) } };
+    };
+
+    const mostrar = (rota: string) => {
+      const { codigo, texto, dados } = responder(rota);
+      const ms = 18 + Math.round(Math.random() * 46);
+      resposta.setAttribute('aria-busy', 'true');
+      status.toggleAttribute('data-ok', false);
+      status.toggleAttribute('data-pending', true);
+      status.textContent = cfg.enviando;
+      tempo.textContent = '… ms';
+      corpo.replaceChildren();
+
+      timer = window.setTimeout(
+        () => {
+          status.toggleAttribute('data-pending', false);
+          status.toggleAttribute('data-ok', codigo < 400);
+          status.textContent = `${codigo} ${texto}`;
+          tempo.textContent = `${ms} ms`;
+          jsonColorido(dados).forEach((html, i) => {
+            const span = document.createElement('span');
+            span.className = semAnimacao ? 'c-line' : 'c-line is-new';
+            span.style.animationDelay = `${i * 24}ms`;
+            span.innerHTML = html; // jsonColorido escapa o texto antes
+            corpo.appendChild(span);
+          });
+          resposta.setAttribute('aria-busy', 'false');
+        },
+        semAnimacao ? 0 : 280,
+      );
+    };
+
+    const enviar = (valor: string, digitar = false) => {
+      const rota = normalizar(valor);
+      window.clearTimeout(timer);
+      window.clearInterval(digitando);
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.rota === rota)));
+      if (!digitar || semAnimacao) {
+        input.value = rota;
+        mostrar(rota);
+        return;
+      }
+      // efeito de digitação da rota antes de enviar
+      input.value = '';
+      let i = 0;
+      digitando = window.setInterval(() => {
+        input.value = rota.slice(0, ++i);
+        if (i >= rota.length) {
+          window.clearInterval(digitando);
+          mostrar(rota);
+        }
+      }, 42);
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      enviar(input.value);
+    });
+    chips.forEach((c) => c.addEventListener('click', () => enviar(c.dataset.rota ?? '', true)));
+
+    // Primeira requisição "ao vivo" quando a página abre
+    if (!semAnimacao) window.setTimeout(() => enviar(raiz.dataset.inicial ?? '', true), 700);
+
+    console.log(
+      '%cOlá, dev! / Hi, dev!%c\nEste site é estático e não guarda nada seu. Tente GET /v1/cafe ou /v1/arremesso no console do topo.\nThis site is static and stores nothing about you. Try GET /v1/coffee or /v1/shot in the hero console.',
+      'font-weight:bold;color:#a78bfa;font-size:14px',
+      'color:inherit',
+    );
+  }
+</script>

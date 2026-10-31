@@ -1,0 +1,197 @@
+---
+import TechIcon from './TechIcon.astro';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const h = c.habilidades;
+---
+<section id="habilidades" class="section">
+  <div class="wrap">
+    <header class="section-header reveal" data-visto>
+      <h2>{h.titulo}</h2>
+      <p>{h.subtitulo}</p>
+    </header>
+
+    <div class="tabs reveal" data-anim="fade" role="tablist" aria-label={h.titulo} data-abas>
+      {h.grupos.map((g, i) => (
+        <button
+          type="button"
+          class="tab"
+          role="tab"
+          id={`aba-${g.id}`}
+          aria-controls={`painel-${g.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          {g.rotulo}
+        </button>
+      ))}
+    </div>
+
+    {h.grupos.map((g) => (
+      <div class="painel" role="tabpanel" id={`painel-${g.id}`} aria-labelledby={`aba-${g.id}`} data-painel>
+        <ul class="blocos">
+          {g.itens.map((item, i) => (
+            <li class="bloco reveal" data-anim="zoom" style={`--d: ${Math.min(i * 55, 500)}ms`}>
+              <TechIcon nome={item} size={30} />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+
+    <div class="rodape-habilidades reveal" data-anim="fade">
+      <p class="estudando">
+        <span class="pulso" aria-hidden="true"></span>
+        {h.estudando}: <strong>AWS</strong>
+      </p>
+      <p class="tambem">{h.tambem}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .painel {
+    max-width: 960px;
+    margin-inline: auto;
+  }
+  .painel[hidden] {
+    display: none;
+  }
+  .blocos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+  .blocos > li {
+    flex: 0 0 140px;
+  }
+  .bloco {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    padding: 24px 12px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: 0.9rem;
+    font-weight: 550;
+    text-align: center;
+    transition:
+      border-color 0.25s var(--ease),
+      transform 0.25s var(--ease),
+      color 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+  .painel {
+    animation: surge 0.45s var(--ease-out);
+  }
+  @keyframes surge {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  .bloco :global(.tech-icon),
+  .bloco :global(.tech-sigla) {
+    color: var(--text);
+    transition: color 0.25s var(--ease);
+  }
+  .bloco:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-3px);
+    color: var(--text);
+    box-shadow: var(--glow);
+  }
+  .bloco:hover :global(.tech-icon),
+  .bloco:hover :global(.tech-sigla) {
+    color: var(--accent-text);
+  }
+  @media (max-width: 480px) {
+    .blocos {
+      gap: 10px;
+    }
+    .blocos > li {
+      flex-basis: calc((100% - 20px) / 3);
+    }
+    .bloco {
+      padding: 18px 6px 14px;
+      font-size: 0.8rem;
+    }
+  }
+
+  .rodape-habilidades {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    text-align: center;
+  }
+  .estudando {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border: 1px solid var(--accent-line);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--text-2);
+    font-size: 0.92rem;
+  }
+  .estudando strong {
+    color: var(--text);
+  }
+  .pulso {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulso 2.4s var(--ease) infinite;
+  }
+  @keyframes pulso {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgb(139 92 246 / 0.5);
+    }
+    50% {
+      box-shadow: 0 0 0 7px rgb(139 92 246 / 0);
+    }
+  }
+  .tambem {
+    color: var(--text-3);
+    font-size: 0.88rem;
+  }
+</style>
+
+<script>
+  const lista = document.querySelector<HTMLElement>('[data-abas]');
+  if (lista) {
+    const abas = [...lista.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const paineis = [...document.querySelectorAll<HTMLElement>('[data-painel]')];
+    const ativar = (aba: HTMLButtonElement, foco = false) => {
+      abas.forEach((a) => {
+        const sel = a === aba;
+        a.setAttribute('aria-selected', String(sel));
+        a.tabIndex = sel ? 0 : -1;
+      });
+      paineis.forEach((p) => (p.hidden = p.id !== aba.getAttribute('aria-controls')));
+      if (foco) aba.focus();
+    };
+    ativar(abas[0]);
+    abas.forEach((a, i) => {
+      a.addEventListener('click', () => ativar(a));
+      a.addEventListener('keydown', (e) => {
+        const passo = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (passo) ativar(abas[(i + passo + abas.length) % abas.length], true);
+        if (e.key === 'Home') ativar(abas[0], true);
+        if (e.key === 'End') ativar(abas[abas.length - 1], true);
+      });
+    });
+  }
+</script>

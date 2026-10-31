@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import TechMarquee from './TechMarquee.astro';
+import Sobre from './Sobre.astro';
+import Experiencia from './Experiencia.astro';
+import Projetos from './Projetos.astro';
+import Habilidades from './Habilidades.astro';
+import Conquistas from './Conquistas.astro';
+import Contato from './Contato.astro';
+import Footer from './Footer.astro';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+---
+<Base c={c}>
+  <Header c={c} />
+  <main id="conteudo">
+    <Hero c={c} />
+    <TechMarquee />
+    <Sobre c={c} />
+    <Experiencia c={c} />
+    <Projetos c={c} />
+    <Habilidades c={c} />
+    <Conquistas c={c} />
+    <Contato c={c} />
+  </main>
+  <Footer c={c} />
+</Base>

@@ -1,0 +1,341 @@
+---
+import type { CapaProjeto } from '../conteudo/tipos';
+
+interface Props {
+  capa: CapaProjeto;
+  grande?: boolean;
+}
+const { capa, grande = false } = Astro.props;
+const corMetodo: Record<string, string> = { GET: 'm-get', POST: 'm-post', PUT: 'm-put', PATCH: 'm-put', DELETE: 'm-del' };
+const destacar = (linha: string) =>
+  linha
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/\b(import|as|from|def|return)\b/g, '<b class="k">$1</b>')
+    .replace(/(\.\w+)\(/g, '<b class="f">$1</b>(');
+---
+<div class:list={['capa', `capa-${capa.tipo}`, { grande }]} aria-hidden="true">
+  <div class="capa-bar">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="capa-titulo">{capa.titulo}</span>
+  </div>
+  <div class="capa-corpo">
+    {capa.tipo === 'api' && (
+      <>
+        <ul class="rotas">
+          {capa.rotas.map(([m, r]) => (
+            <li><span class:list={['metodo', corMetodo[m]]}>{m}</span><span>{r}</span></li>
+          ))}
+        </ul>
+        <p class="rodape ok">✓ {capa.rodape}</p>
+      </>
+    )}
+    {capa.tipo === 'testes' && (
+      <>
+        <ul class="casos">
+          {capa.casos.map(([id, nome, ok]) => (
+            <li class={ok ? 'ok' : 'falha'}><span>{ok ? '✓' : '✗'}</span><span class="id">{id}</span><span class="nome">{nome}</span></li>
+          ))}
+        </ul>
+        <p class="rodape bug">● {capa.rodape}</p>
+      </>
+    )}
+    {capa.tipo === 'monorepo' && (
+      <>
+        <ul class="arvore">
+          {capa.arvore.map((l) => (
+            <li class:list={{ pasta: l.endsWith('/'), sub: l.startsWith('  ') }}>{l.trim()}</li>
+          ))}
+        </ul>
+        <p class="rodape ok">✓ {capa.rodape}</p>
+      </>
+    )}
+    {capa.tipo === 'pipeline' && (
+      <ol class="pipeline">
+        {capa.etapas.map(([etapa, ferramenta]) => (
+          <li><span class="etapa">{etapa}</span><span class="ferramenta">{ferramenta}</span></li>
+        ))}
+      </ol>
+    )}
+    {capa.tipo === 'codigo' && (
+      <>
+        <ol class="codigo">
+          {capa.linhas.map((l) => <li set:html={destacar(l) || '&nbsp;'} />)}
+        </ol>
+        <p class="rodape ok">✓ {capa.rodape}</p>
+      </>
+    )}
+    {capa.tipo === 'linguagens' && (
+      <ul class="langs">
+        {capa.itens.map(([l, p]) => (
+          <li><span class="l">{l}</span><span class="p">{p}</span></li>
+        ))}
+      </ul>
+    )}
+    {capa.tipo === 'ctf' && (
+      <>
+        <ul class="ctf">
+          {capa.desafios.map((d) => <li><span class="ok-mark">✓</span>{d}.md</li>)}
+        </ul>
+        <p class="rodape flag">{capa.rodape}</p>
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .capa {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 200px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgb(124 58 237 / 0.22), transparent 60%),
+      linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px) 0 0 / 22px 22px,
+      linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px) 0 0 / 22px 22px,
+      var(--code-bg);
+    color: var(--code-text);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+  .grande {
+    min-height: 240px;
+    font-size: 0.82rem;
+  }
+  .capa-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--code-line);
+    background: rgb(18 18 25 / 0.7);
+    color: var(--code-dim);
+  }
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #3a3a48;
+  }
+  .capa-titulo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .capa-corpo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 18px;
+  }
+  .rodape {
+    font-weight: 600;
+  }
+  .ok {
+    color: var(--code-ok);
+  }
+  .bug {
+    color: var(--code-err);
+  }
+  .flag {
+    color: var(--code-accent);
+    letter-spacing: 0.04em;
+  }
+
+  .rotas,
+  .casos,
+  .arvore,
+  .ctf {
+    display: grid;
+    gap: 6px;
+  }
+  .rotas li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .metodo {
+    min-width: 54px;
+    padding: 1px 0;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.68em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .grande .metodo {
+    font-size: 0.75em;
+  }
+  .m-get {
+    background: rgb(74 222 128 / 0.14);
+    color: #4ade80;
+  }
+  .m-post {
+    background: rgb(167 139 250 / 0.16);
+    color: #c4b5fd;
+  }
+  .m-put {
+    background: rgb(251 191 36 / 0.14);
+    color: #fcd34d;
+  }
+  .m-del {
+    background: rgb(248 113 113 / 0.14);
+    color: #fca5a5;
+  }
+
+  .casos li {
+    display: grid;
+    grid-template-columns: 14px auto 1fr;
+    gap: 10px;
+  }
+  .casos .ok {
+    color: var(--code-text);
+  }
+  .casos .ok > span:first-child {
+    color: var(--code-ok);
+  }
+  .casos .falha > span:first-child,
+  .casos .falha .id {
+    color: var(--code-err);
+  }
+  .casos .id {
+    color: var(--code-dim);
+  }
+  .casos .nome {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .arvore li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--code-text);
+  }
+  .arvore li::before {
+    content: '';
+    width: 10px;
+    height: 8px;
+    border-radius: 2px;
+    border: 1.5px solid var(--code-dim);
+  }
+  .arvore .pasta::before {
+    border-color: var(--code-accent);
+    background: rgb(167 139 250 / 0.2);
+  }
+  .arvore .pasta {
+    color: #ddd6fe;
+    font-weight: 600;
+  }
+  .arvore .sub {
+    padding-left: 20px;
+    color: var(--code-dim);
+  }
+
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    counter-reset: etapa;
+  }
+  .pipeline li {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    padding: 10px 12px;
+    border: 1px solid var(--code-line);
+    border-radius: 10px;
+    background: rgb(255 255 255 / 0.02);
+    counter-increment: etapa;
+  }
+  .pipeline li::before {
+    content: counter(etapa);
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    color: var(--code-dim);
+    font-size: 0.85em;
+  }
+  .etapa {
+    color: var(--code-text);
+    font-weight: 600;
+  }
+  .ferramenta {
+    color: var(--code-accent);
+  }
+
+  .codigo {
+    display: grid;
+    gap: 3px;
+    counter-reset: ln;
+  }
+  .codigo li {
+    counter-increment: ln;
+    white-space: pre;
+  }
+  .codigo li::before {
+    content: counter(ln);
+    display: inline-block;
+    width: 22px;
+    color: #4a4a5c;
+  }
+  .codigo :global(.k) {
+    color: #c4b5fd;
+    font-weight: 500;
+  }
+  .codigo :global(.f) {
+    color: #93c5fd;
+    font-weight: 500;
+  }
+
+  .langs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .langs li {
+    display: grid;
+    gap: 1px;
+    padding: 8px 10px;
+    border: 1px solid var(--code-line);
+    border-radius: 8px;
+    background: rgb(255 255 255 / 0.02);
+  }
+  .langs .l {
+    color: var(--code-text);
+    font-weight: 600;
+  }
+  .langs .l,
+  .langs .p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .langs .p {
+    color: var(--code-dim);
+    font-size: 0.78em;
+  }
+  .langs li {
+    min-width: 0;
+    padding: 7px 8px;
+  }
+
+  .ctf li {
+    display: flex;
+    gap: 10px;
+    color: var(--code-text);
+  }
+  .ok-mark {
+    color: var(--code-ok);
+  }
+</style>

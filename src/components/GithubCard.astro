@@ -1,0 +1,231 @@
+---
+import Icon from './Icon.astro';
+import TechIcon from './TechIcon.astro';
+import { contatos } from '../data/comum';
+import { resumoGithub } from '../lib/github';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const g = await resumoGithub(contatos.githubUsuario);
+// Para repositórios que também são projetos do site, usa a descrição no idioma da página
+const descricao = (url: string, original: string | null) =>
+  c.projetos.itens.find((p) => p.repositorio?.toLowerCase() === url.toLowerCase())?.resumo ?? original;
+const data = new Intl.DateTimeFormat(c.htmlLang, { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<div class="gh reveal">
+  <div class="gh-head">
+    <span class="gh-logo"><Icon name="github" size={20} /></span>
+    <div>
+      <h3>{c.github.titulo}</h3>
+      <p>{c.github.subtitulo}</p>
+    </div>
+    <a class="btn btn-secondary btn-sm gh-link" href={contatos.github} target="_blank" rel="noopener noreferrer">
+      {c.github.verPerfil}
+      <Icon name="arrow-up-right" size={15} />
+      <span class="sr-only">{c.ui.abreNovaAba}</span>
+    </a>
+  </div>
+
+  <dl class="gh-stats">
+    <div>
+      <dt>{c.github.repos}</dt>
+      <dd data-contar={g.repos}>{g.repos}</dd>
+    </div>
+    <div>
+      <dt>{c.github.linguagem}</dt>
+      <dd class="gh-lang"><TechIcon nome={g.linguagemPrincipal} size={22} />{g.linguagemPrincipal}</dd>
+    </div>
+    <div class="gh-langs">
+      <dt>{c.github.linguagens}</dt>
+      <dd>
+        <ul>
+          {g.linguagens.map((l) => <li class="chip">{l}</li>)}
+        </ul>
+      </dd>
+    </div>
+  </dl>
+
+  <div class="gh-recentes">
+    <h4>{c.github.recentes}</h4>
+    <ul>
+      {g.recentes.map((r, i) => (
+        <li class="reveal" style={`--d: ${i * 90}ms`}>
+          <a href={r.url} target="_blank" rel="noopener noreferrer" data-brilho>
+            <span class="repo-top">
+              <Icon name="folder-git-2" size={16} />
+              <span class="repo-nome">{r.nome}</span>
+              <Icon name="arrow-up-right" size={14} class="repo-seta" />
+            </span>
+            {descricao(r.url, r.descricao) && <span class="repo-desc">{descricao(r.url, r.descricao)}</span>}
+            <span class="repo-meta">
+              {r.linguagem && <span class="repo-lang"><i aria-hidden="true"></i>{r.linguagem}</span>}
+              {r.atualizadoEm && <span>{c.github.atualizado} {data.format(new Date(r.atualizadoEm))}</span>}
+            </span>
+            <span class="sr-only">{c.ui.abreNovaAba}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .gh {
+    margin-top: clamp(64px, 8vw, 96px);
+    padding: clamp(20px, 3vw, 32px);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .gh-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 16px;
+  }
+  .gh-head > div {
+    flex: 1;
+    min-width: 200px;
+  }
+  .gh-logo {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-m);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+  .gh-head h3 {
+    font-size: 1.15rem;
+  }
+  .gh-head p {
+    color: var(--text-3);
+    font-size: 0.88rem;
+  }
+
+  .gh-stats {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  @media (min-width: 760px) {
+    .gh-stats {
+      grid-template-columns: 1fr 1fr 2fr;
+    }
+  }
+  .gh-stats > div {
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    background: var(--bg-alt);
+  }
+  .gh-stats dt {
+    color: var(--text-3);
+    font-size: 0.82rem;
+  }
+  .gh-stats dd {
+    margin-top: 4px;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .gh-lang {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem !important;
+    color: var(--text);
+  }
+  .gh-lang :global(.tech-icon) {
+    color: var(--accent-text);
+  }
+  .gh-langs ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .gh-langs dd {
+    font-size: 1rem !important;
+  }
+
+  .gh-recentes {
+    margin-top: 28px;
+  }
+  .gh-recentes h4 {
+    font-size: 0.95rem;
+    color: var(--text-2);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .gh-recentes ul {
+    display: grid;
+    gap: 12px;
+  }
+  @media (min-width: 760px) {
+    .gh-recentes ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .gh-recentes a {
+    display: grid;
+    gap: 6px;
+    height: 100%;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+  .gh-recentes a:hover {
+    border-color: var(--accent-line);
+    background: var(--surface-2);
+  }
+  .repo-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-3);
+  }
+  .repo-nome {
+    flex: 1;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .gh-recentes a:hover .repo-nome {
+    color: var(--accent-text);
+  }
+  .repo-desc {
+    color: var(--text-2);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .repo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    color: var(--text-3);
+    font-size: 0.8rem;
+  }
+  .repo-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .repo-lang i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+</style>

@@ -1,0 +1,155 @@
+---
+import Icon from './Icon.astro';
+import { perfil, contatos } from '../data/comum';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const ano = new Date().getFullYear();
+const sociais = [
+  { href: contatos.github, icone: 'github', rotulo: 'GitHub' },
+  { href: contatos.linkedin, icone: 'linkedin', rotulo: 'LinkedIn' },
+  { href: `https://wa.me/${contatos.whatsappNumero}`, icone: 'whatsapp', rotulo: 'WhatsApp' },
+];
+---
+<footer class="rodape">
+  <div class="wrap">
+    <div class="topo">
+      <div class="marca">
+        <a class="logo" href="#inicio">
+          <span class="logo-mark" aria-hidden="true">{perfil.iniciais}</span>
+          <span>{perfil.nome}</span>
+        </a>
+        <p>{c.rodape.frase}</p>
+        <ul class="sociais">
+          {sociais.map((s) => (
+            <li>
+              <a class="icon-btn" href={s.href} target="_blank" rel="noopener noreferrer">
+                <Icon name={s.icone} size={17} label={s.rotulo} />
+              </a>
+            </li>
+          ))}
+          <li>
+            <a class="icon-btn" href={`mailto:${contatos.email}`}><Icon name="mail" size={17} label={c.contato.canais.email} /></a>
+          </li>
+        </ul>
+      </div>
+      <nav aria-label={c.lang === 'pt' ? 'Rodapé' : 'Footer'}>
+        <ul class="links">
+          {c.nav.slice(1).map((n) => <li><a href={`#${n.id}`}>{n.rotulo}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+    <div class="base">
+      <p>© {ano} {perfil.nome}. {c.rodape.direitos}</p>
+      <p class="feito">{c.rodape.feitoCom}</p>
+      <a class="topo-link" href="#inicio">
+        {c.ui.voltarTopo}
+        <Icon name="arrow-up" size={15} />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    position: relative;
+    border-top: 1px solid var(--border);
+    background: var(--bg-alt);
+    padding-top: 56px;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+  .rodape::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    width: min(560px, 80%);
+    height: 1px;
+    translate: -50% 0;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .topo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 36px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .marca {
+    display: grid;
+    gap: 14px;
+    max-width: 360px;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 650;
+    font-size: 1.05rem;
+    text-decoration: none;
+  }
+  .logo-mark {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #a78bfa, #7c3aed 55%, #5b21b6);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .marca p {
+    color: var(--text-2);
+    font-size: 0.94rem;
+  }
+  .sociais {
+    display: flex;
+    gap: 8px;
+  }
+  .sociais .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .links {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px 48px;
+  }
+  .links a {
+    color: var(--text-2);
+    font-size: 0.93rem;
+    text-decoration: none;
+  }
+  .links a:hover {
+    color: var(--accent-text);
+  }
+  .base {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 24px;
+    padding-top: 24px;
+    color: var(--text-3);
+    font-size: 0.86rem;
+  }
+  .feito {
+    flex: 1;
+  }
+  .topo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-2);
+    text-decoration: none;
+  }
+  .topo-link:hover {
+    color: var(--text);
+  }
+</style>

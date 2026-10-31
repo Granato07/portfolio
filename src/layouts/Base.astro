@@ -1,0 +1,77 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { site, perfil, contatos } from '../data/comum';
+import { rotaIdioma, type Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const { c, title = c.meta.titulo, description = c.meta.descricao, noindex = false } = Astro.props;
+const canonical = new URL(rotaIdioma[c.lang], site.url).href;
+const ogImage = new URL(c.lang === 'en' ? '/og-en.png' : '/og.png', site.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: perfil.nomeCompleto,
+  alternateName: perfil.nome,
+  jobTitle: c.hero.cargo,
+  url: site.url,
+  image: ogImage,
+  email: `mailto:${contatos.email}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Santa Rita do Sapucaí', addressRegion: 'MG', addressCountry: 'BR' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Inatel - Instituto Nacional de Telecomunicações' },
+  knowsAbout: ['Node.js', 'TypeScript', 'REST APIs', 'SQL', 'Automated testing', 'Playwright', 'Generative AI'],
+  sameAs: [contatos.linkedin, contatos.github],
+};
+---
+<!doctype html>
+<html lang={c.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline src="/theme-init.js"></script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={perfil.nomeCompleto} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(rotaIdioma.pt, site.url).href} />
+    <link rel="alternate" hreflang="en" href={new URL(rotaIdioma.en, site.url).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(rotaIdioma.pt, site.url).href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#09090c" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content={c.ogLocale} />
+    <meta property="og:site_name" content={perfil.nome} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">{c.ui.pularConteudo}</a>
+    <div class="progresso" data-progresso aria-hidden="true"></div>
+    <slot />
+    <a class="topo-flutuante" href="#inicio" data-topo aria-label={c.ui.voltarTopo}><Icon name="arrow-up" size={20} /></a>
+    <script>
+      import '../lib/animacoes';
+    </script>
+  </body>
+</html>

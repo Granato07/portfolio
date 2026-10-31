@@ -1,0 +1,470 @@
+---
+import Icon from './Icon.astro';
+import { contatos, perfil, formularioAtivo } from '../data/comum';
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const k = c.contato;
+const canais = [
+  { id: 'email', icone: 'mail', rotulo: k.canais.email, valor: contatos.email, dica: k.dicas.email, href: `mailto:${contatos.email}`, externo: false },
+  { id: 'whatsapp', icone: 'whatsapp', rotulo: k.canais.whatsapp, valor: contatos.whatsappExibicao, dica: k.dicas.whatsapp, href: `https://wa.me/${contatos.whatsappNumero}`, externo: true },
+  { id: 'linkedin', icone: 'linkedin', rotulo: k.canais.linkedin, valor: contatos.linkedinExibicao, dica: k.dicas.linkedin, href: contatos.linkedin, externo: true },
+  { id: 'github', icone: 'github', rotulo: k.canais.github, valor: contatos.githubUsuario, dica: k.dicas.github, href: contatos.github, externo: true },
+];
+---
+<section id="contato" class="section">
+  <div class="wrap">
+    <header class="section-header reveal" data-visto>
+      <h2>{k.titulo}</h2>
+      <p>{k.subtitulo}</p>
+    </header>
+
+    <ul class="canais">
+      {canais.map((canal, i) => (
+        <li class="reveal" style={`--d: ${i * 90}ms`}>
+          <a class="canal" data-brilho href={canal.href} target={canal.externo ? '_blank' : undefined} rel={canal.externo ? 'noopener noreferrer' : undefined}>
+            <span class="canal-icone"><Icon name={canal.icone} size={22} /></span>
+            <span class="canal-rotulo">{canal.rotulo}</span>
+            <span class="canal-valor">{canal.valor}</span>
+            <span class="canal-dica">{canal.dica}</span>
+            <Icon name="arrow-up-right" size={18} class="canal-seta" />
+            {canal.externo && <span class="sr-only">{c.ui.abreNovaAba}</span>}
+          </a>
+          {canal.id === 'email' && (
+            <button type="button" class="copiar" data-copiar={contatos.email} data-ok={c.ui.copiado} aria-label={c.ui.copiar}>
+              <Icon name="copy" size={15} class="i-copiar" />
+              <Icon name="check" size={15} class="i-ok" />
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <div class:list={['bloco', { 'sem-form': !formularioAtivo }]}>
+      <aside class="info reveal" data-anim="left">
+        <span class="info-icone"><Icon name="message-square" size={24} /></span>
+        <h3>{k.formTitulo}</h3>
+        <p>{k.formTexto}</p>
+        <ul class="info-lista">
+          <li><Icon name="map-pin" size={17} />{k.local}</li>
+          <li><Icon name="laptop" size={17} />{k.disponibilidade}</li>
+          <li><Icon name="languages" size={17} />{c.sobre.fatos[2].valor}</li>
+        </ul>
+        <a class="btn btn-secondary" href={perfil.curriculo[c.lang]} download>
+          <Icon name="download" size={17} />
+          {c.ui.baixarCv}
+        </a>
+        <div class="info-redes">
+          {canais.filter((x) => x.externo).map((canal) => (
+            <a class="icon-btn" href={canal.href} target="_blank" rel="noopener noreferrer">
+              <Icon name={canal.icone} size={18} label={canal.rotulo} />
+            </a>
+          ))}
+        </div>
+      </aside>
+
+      {formularioAtivo && (
+        <form class="form reveal" data-anim="right" style="--d: 120ms" data-form-contato data-lang={c.lang} novalidate>
+          <div class="campo">
+            <label for="contato-nome">{k.nome}</label>
+            <input id="contato-nome" name="nome" type="text" autocomplete="name" required maxlength="80" placeholder={k.placeholderNome} />
+          </div>
+          <div class="campo">
+            <label for="contato-email">{k.email}</label>
+            <input id="contato-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder={k.placeholderEmail} />
+          </div>
+          <div class="campo">
+            <label for="contato-mensagem">{k.mensagem}</label>
+            <textarea id="contato-mensagem" name="mensagem" rows="5" required minlength="10" maxlength="2000" placeholder={k.placeholderMensagem}></textarea>
+          </div>
+          {/* Armadilha para robôs: pessoas não veem nem preenchem este campo */}
+          <div class="pote" aria-hidden="true">
+            <label for="contato-site">Site</label>
+            <input id="contato-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <button class="btn btn-primary enviar" type="submit" data-rotulo={k.enviar} data-enviando={k.enviando}>
+            <Icon name="send" size={17} />
+            <span>{k.enviar}</span>
+          </button>
+          <p
+            class="aviso"
+            role="status"
+            aria-live="polite"
+            data-aviso
+            data-sucesso={k.sucesso}
+            data-erro-campos={k.erroCampos}
+            data-erro-limite={k.erroLimite}
+            data-erro-geral={k.erroGeral}
+            data-email={contatos.email}
+          ></p>
+        </form>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .canais {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+  .canais li {
+    position: relative;
+  }
+  .canal {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    height: 100%;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    text-decoration: none;
+    transition:
+      border-color 0.25s var(--ease),
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+  .canal:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
+  }
+  .canal-icone {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 16px;
+    border-radius: var(--r-m);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+  .canal-rotulo {
+    font-weight: 650;
+    font-size: 1.02rem;
+  }
+  .canal-valor {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+  }
+  .canal-dica {
+    margin-top: 4px;
+    color: var(--text-3);
+    font-size: 0.8rem;
+  }
+  .canal :global(.canal-seta) {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    color: var(--text-3);
+    transition:
+      transform 0.25s var(--ease),
+      color 0.25s var(--ease);
+  }
+  .canal:hover :global(.canal-seta) {
+    color: var(--accent-text);
+    transform: translate(2px, -2px);
+  }
+  @media (max-width: 640px) {
+    .canal {
+      grid-template-columns: auto 1fr;
+      column-gap: 16px;
+      padding: 18px 56px 18px 18px;
+    }
+    .canal-icone {
+      grid-row: span 3;
+      margin-bottom: 0;
+      align-self: center;
+    }
+    .canal :global(.canal-seta) {
+      top: 50%;
+      right: 18px;
+      translate: 0 -50%;
+    }
+    .canais li:first-child .canal {
+      padding-right: 100px;
+    }
+    .copiar {
+      right: 48px !important;
+      bottom: auto !important;
+      top: 50%;
+      translate: 0 -50%;
+    }
+  }
+  .copiar {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-2);
+    cursor: pointer;
+  }
+  .copiar:hover {
+    color: var(--text);
+    border-color: var(--accent-line);
+  }
+  .copiar :global(.icon) {
+    grid-area: 1 / 1;
+  }
+  .copiar :global(.i-ok),
+  .copiar[data-copiado] :global(.i-copiar) {
+    visibility: hidden;
+  }
+  .copiar[data-copiado] :global(.i-ok) {
+    visibility: visible;
+    color: var(--ok);
+  }
+
+  .bloco {
+    display: grid;
+    gap: 20px;
+    margin-top: 32px;
+  }
+  @media (min-width: 900px) {
+    .bloco {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+    .bloco.sem-form {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+  }
+  .info,
+  .form {
+    padding: clamp(22px, 3.4vw, 34px);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    background:
+      radial-gradient(120% 100% at 0% 0%, rgb(124 58 237 / 0.2), transparent 60%),
+      var(--surface);
+  }
+  .info-icone {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    color: #fff;
+  }
+  .info h3 {
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+  .info > p {
+    color: var(--text-2);
+  }
+  .info-redes {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  .info-lista {
+    display: grid;
+    gap: 10px;
+    margin: 6px 0 8px;
+    color: var(--text-2);
+    font-size: 0.92rem;
+  }
+  .info-lista li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .info-lista :global(.icon) {
+    flex: none;
+    color: var(--accent-text);
+  }
+
+  .form {
+    display: grid;
+    gap: 18px;
+  }
+  .campo {
+    display: grid;
+    gap: 8px;
+  }
+  .campo label {
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .campo input,
+  .campo textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-m);
+    background: var(--bg-alt);
+    color: var(--text);
+    font-size: 0.95rem;
+    transition:
+      border-color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+  .campo textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.55;
+  }
+  .campo input::placeholder,
+  .campo textarea::placeholder {
+    color: var(--text-3);
+  }
+  .campo input:focus,
+  .campo textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .campo [aria-invalid='true'] {
+    border-color: var(--err);
+  }
+  .pote {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .enviar {
+    justify-self: start;
+  }
+  .enviar[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+  .aviso {
+    min-height: 1.4em;
+    font-size: 0.92rem;
+    color: var(--text-2);
+  }
+  .aviso[data-tipo='ok'] {
+    color: var(--ok);
+  }
+  .aviso[data-tipo='erro'] {
+    color: var(--err);
+  }
+  .aviso a {
+    color: inherit;
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // Copiar e-mail
+  document.querySelectorAll<HTMLButtonElement>('[data-copiar]').forEach((b) =>
+    b.addEventListener('click', async () => {
+      const texto = b.dataset.copiar ?? '';
+      try {
+        await navigator.clipboard.writeText(texto);
+      } catch {
+        const area = document.createElement('textarea');
+        area.value = texto;
+        document.body.appendChild(area);
+        area.select();
+        try {
+          document.execCommand('copy');
+        } catch {
+          /* sem área de transferência: o e-mail continua visível no cartão */
+        }
+        area.remove();
+      }
+      b.setAttribute('data-copiado', '');
+      const rotulo = b.getAttribute('aria-label');
+      b.setAttribute('aria-label', b.dataset.ok ?? '');
+      window.setTimeout(() => {
+        b.removeAttribute('data-copiado');
+        if (rotulo) b.setAttribute('aria-label', rotulo);
+      }, 2000);
+    }),
+  );
+
+  // Formulário
+  const form = document.querySelector<HTMLFormElement>('[data-form-contato]');
+  if (form) {
+    const aviso = form.querySelector<HTMLElement>('[data-aviso]')!;
+    const botao = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const rotuloBotao = botao.querySelector('span')!;
+    const aberto = Date.now();
+
+    const avisar = (tipo: 'ok' | 'erro' | '', texto: string, comEmail = false) => {
+      aviso.dataset.tipo = tipo;
+      aviso.textContent = texto;
+      if (comEmail) {
+        const a = document.createElement('a');
+        a.href = `mailto:${aviso.dataset.email}`;
+        a.textContent = aviso.dataset.email ?? '';
+        aviso.append(' ', a, '.');
+      }
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const campos = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]')];
+      let valido = true;
+      campos.forEach((c) => {
+        const ok = c.checkValidity() && c.value.trim().length > 0;
+        c.setAttribute('aria-invalid', String(!ok));
+        if (!ok) valido = false;
+      });
+      if (!valido) {
+        avisar('erro', aviso.dataset.erroCampos ?? '');
+        campos.find((c) => c.getAttribute('aria-invalid') === 'true')?.focus();
+        return;
+      }
+
+      const dados = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      botao.disabled = true;
+      rotuloBotao.textContent = botao.dataset.enviando ?? '';
+      avisar('', '');
+
+      try {
+        const resp = await fetch('/api/contato', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...dados, idioma: form.dataset.lang, tempo: Date.now() - aberto }),
+        });
+        if (resp.ok) {
+          form.reset();
+          campos.forEach((c) => c.removeAttribute('aria-invalid'));
+          avisar('ok', aviso.dataset.sucesso ?? '');
+        } else if (resp.status === 400) {
+          avisar('erro', aviso.dataset.erroCampos ?? '');
+        } else if (resp.status === 429) {
+          avisar('erro', aviso.dataset.erroLimite ?? '');
+        } else {
+          avisar('erro', aviso.dataset.erroGeral ?? '', true);
+        }
+      } catch {
+        avisar('erro', aviso.dataset.erroGeral ?? '', true);
+      } finally {
+        botao.disabled = false;
+        rotuloBotao.textContent = botao.dataset.rotulo ?? '';
+      }
+    });
+  }
+</script>

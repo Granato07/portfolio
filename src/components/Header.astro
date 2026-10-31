@@ -1,0 +1,336 @@
+---
+import Icon from './Icon.astro';
+import { perfil } from '../data/comum';
+import { rotaIdioma, type Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+const outro = c.lang === 'pt' ? 'en' : 'pt';
+---
+<header class="site-header" data-header>
+  <div class="wrap header-inner">
+    <a class="logo" href="#inicio" aria-label={`${perfil.nome}, ${c.nav[0].rotulo}`}>
+      <span class="logo-mark" aria-hidden="true">{perfil.iniciais}</span>
+      <span class="logo-name">{perfil.nome}</span>
+    </a>
+
+    <nav class="nav" id="menu-principal" aria-label="Menu" data-menu>
+      <ul class="nav-list">
+        {c.nav.map((item) => (
+          <li><a href={`#${item.id}`} data-nav>{item.rotulo}</a></li>
+        ))}
+      </ul>
+      <a class="btn btn-primary btn-sm nav-cv" href={perfil.curriculo[c.lang]} download>
+        <Icon name="download" size={16} />
+        {c.ui.baixarCv}
+      </a>
+    </nav>
+
+    <div class="actions">
+      <a class="action lang" href={rotaIdioma[outro]} hreflang={outro === 'en' ? 'en' : 'pt-BR'} lang={outro === 'en' ? 'en' : 'pt-BR'} aria-label={c.ui.trocarIdioma}>
+        <Icon name="globe" size={16} />
+        <span>{c.ui.idiomaAlvo}</span>
+      </a>
+      <button class="action" type="button" data-theme-toggle aria-label={c.ui.alternarTema}>
+        <Icon name="sun" class="i-sun" />
+        <Icon name="moon" class="i-moon" />
+      </button>
+      <a class="btn btn-primary btn-sm cv-desktop" href={perfil.curriculo[c.lang]} download>
+        <Icon name="download" size={16} />
+        {c.ui.cv}
+      </a>
+      <button
+        class="action menu-toggle"
+        type="button"
+        aria-controls="menu-principal"
+        aria-expanded="false"
+        data-menu-toggle
+        data-label-open={c.ui.abrirMenu}
+        data-label-close={c.ui.fecharMenu}
+        aria-label={c.ui.abrirMenu}
+      >
+        <Icon name="menu" class="i-menu" size={20} />
+        <Icon name="x" class="i-close" size={20} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    padding-top: env(safe-area-inset-top, 0px);
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 0.3s var(--ease),
+      border-color 0.3s var(--ease),
+      backdrop-filter 0.3s var(--ease);
+  }
+  .site-header[data-scrolled] {
+    background: var(--header-bg);
+    border-bottom-color: var(--border);
+    backdrop-filter: saturate(1.6) blur(16px);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+  }
+  .header-inner {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto;
+    text-decoration: none;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .logo-mark {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #a78bfa, #7c3aed 55%, #5b21b6);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.25) inset,
+      0 6px 18px -6px rgb(124 58 237 / 0.7);
+  }
+  .logo-name {
+    font-size: 1rem;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+  }
+  .nav-list {
+    display: flex;
+    gap: 2px;
+  }
+  .nav-list a {
+    position: relative;
+    display: block;
+    padding: 8px 12px;
+    border-radius: var(--r-s);
+    color: var(--text-2);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
+  }
+  .nav-list a:hover,
+  .nav-list a[aria-current='true'] {
+    color: var(--text);
+  }
+  .nav-list a::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 3px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.25s var(--ease);
+  }
+  .nav-list a[aria-current='true']::after {
+    transform: scaleX(1);
+  }
+  .nav-cv {
+    display: none;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: var(--r-s);
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    color: var(--text-2);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  .action:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .action :global(.icon) {
+    flex: none;
+  }
+  [data-theme-toggle] :global(.icon),
+  .menu-toggle :global(.icon) {
+    grid-area: 1 / 1;
+  }
+  [data-theme-toggle],
+  .menu-toggle {
+    display: inline-grid;
+    padding: 0;
+  }
+  :global(:root[data-theme='light']) [data-theme-toggle] :global(.i-sun),
+  :global(:root:not([data-theme='light'])) [data-theme-toggle] :global(.i-moon) {
+    visibility: hidden;
+  }
+  .menu-toggle {
+    display: none;
+  }
+  .menu-toggle :global(.i-close),
+  .menu-toggle[aria-expanded='true'] :global(.i-menu) {
+    visibility: hidden;
+  }
+  .menu-toggle[aria-expanded='true'] :global(.i-close) {
+    visibility: visible;
+  }
+
+  @media (max-width: 1100px) {
+    .logo-name {
+      display: none;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .cv-desktop {
+      display: none;
+    }
+    .menu-toggle {
+      display: inline-grid;
+    }
+    .nav {
+      position: fixed;
+      top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      max-height: calc(100dvh - var(--header-h));
+      overflow-y: auto;
+      padding: 12px max(var(--gutter), env(safe-area-inset-left, 0px)) 24px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 24px 40px -20px rgb(0 0 0 / 0.5);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition:
+        opacity 0.2s var(--ease),
+        transform 0.2s var(--ease),
+        visibility 0s linear 0.2s;
+    }
+    .nav[data-open] {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.2s var(--ease),
+        transform 0.2s var(--ease);
+    }
+    .nav-list {
+      flex-direction: column;
+    }
+    .nav-list a {
+      padding: 13px 4px;
+      font-size: 1.05rem;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+    }
+    .nav-list a::after {
+      display: none;
+    }
+    .nav-list a[aria-current='true'] {
+      color: var(--accent-text);
+    }
+    .nav-cv {
+      display: inline-flex;
+      min-height: 46px;
+    }
+  }
+  @media (max-width: 960px) and (min-width: 520px) {
+    .logo-name {
+      display: inline;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const themeBtn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+  const onScroll = () => header?.toggleAttribute('data-scrolled', window.scrollY > 10);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  themeBtn?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const novo = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', novo);
+    try {
+      localStorage.setItem('tema', novo);
+    } catch {
+      /* navegação privada: o tema só não fica salvo */
+    }
+  });
+
+  const setMenu = (aberto: boolean) => {
+    if (!menu || !menuBtn) return;
+    menu.toggleAttribute('data-open', aberto);
+    menuBtn.setAttribute('aria-expanded', String(aberto));
+    menuBtn.setAttribute('aria-label', (aberto ? menuBtn.dataset.labelClose : menuBtn.dataset.labelOpen) ?? '');
+    if (aberto) header?.setAttribute('data-scrolled', '');
+    else onScroll();
+  };
+  menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuBtn?.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      menuBtn.focus();
+    }
+  });
+
+  // Destaca no menu a seção visível
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav]')];
+  const secoes = links
+    .map((a) => document.getElementById((a.getAttribute('href') ?? '').slice(1)))
+    .filter((s): s is HTMLElement => !!s);
+  const obs = new IntersectionObserver(
+    (entradas) => {
+      for (const e of entradas) {
+        if (!e.isIntersecting) continue;
+        links.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === `#${e.target.id}`)));
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  secoes.forEach((s) => obs.observe(s));
+</script>
