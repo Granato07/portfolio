@@ -1,4 +1,5 @@
 ---
+import Palavras from './Palavras.astro';
 import TechIcon from './TechIcon.astro';
 import type { Conteudo } from '../conteudo';
 
@@ -10,9 +11,9 @@ const h = c.habilidades;
 ---
 <section id="habilidades" class="section">
   <div class="wrap">
-    <header class="section-header reveal" data-visto>
-      <h2>{h.titulo}</h2>
-      <p>{h.subtitulo}</p>
+    <header class="section-header reveal" data-anim="words">
+      <h2><Palavras texto={h.titulo} /></h2>
+      <p class="reveal" data-anim="fade" style="--d: 300ms">{h.subtitulo}</p>
     </header>
 
     <div class="tabs reveal" data-anim="fade" role="tablist" aria-label={h.titulo} data-abas>

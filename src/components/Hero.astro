@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import ApiConsole from './ApiConsole.astro';
+import Palavras from './Palavras.astro';
 import { perfil, contatos } from '../data/comum';
 import type { Conteudo } from '../conteudo';
 
@@ -19,6 +20,7 @@ const sociais = [
 <section id="inicio" class="hero">
   <div class="hero-bg" aria-hidden="true">
     <div class="grid"></div>
+    <div class="luz" data-luz></div>
     <div class="glow glow-a"></div>
     <div class="glow glow-b"></div>
   </div>
@@ -27,11 +29,11 @@ const sociais = [
     <div class="hero-text">
       <p class="selo">
         <span class="selo-dot" aria-hidden="true"></span>
-        {c.hero.selo}
+        <span data-relogio={c.hero.relogio} data-lang={c.htmlLang}>{c.hero.selo}</span>
       </p>
       <h1>
-        <span class="nome">{primeiro}</span>
-        <span class="nome">{resto.join(' ')}</span>
+        <span class="nome"><Palavras texto={primeiro} /></span>
+        <span class="nome"><Palavras texto={resto.join(' ')} inicio={1} /></span>
         <span class="sr-only">, </span>
         <span class="cargo">{c.hero.cargo}</span>
       </h1>
@@ -60,7 +62,7 @@ const sociais = [
     </div>
 
     <div class="hero-console">
-      <ApiConsole c={c} />
+      <div data-tilt><ApiConsole c={c} /></div>
     </div>
   </div>
 
@@ -107,7 +109,7 @@ const sociais = [
     height: 560px;
     right: -120px;
     top: -140px;
-    background: rgb(124 58 237 / 0.28);
+    background: rgb(124 58 237 / 0.17);
   }
   .glow-b {
     animation: deriva 20s ease-in-out -6s infinite alternate-reverse;
@@ -152,13 +154,10 @@ const sociais = [
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 14px 6px 10px;
-    border: 1px solid var(--accent-line);
-    border-radius: 999px;
-    background: var(--accent-soft);
-    color: var(--accent-text);
-    font-size: 0.85rem;
-    font-weight: 550;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
   }
   .selo-dot {
     width: 8px;
@@ -184,10 +183,22 @@ const sociais = [
     display: block;
     font-size: clamp(3.4rem, 9.6vw, 6.9rem);
     padding-bottom: 0.06em;
-    background: linear-gradient(180deg, var(--text) 35%, color-mix(in srgb, var(--text) 45%, var(--accent)) 110%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--text);
+  }
+  .nome :global(.w > span) {
+    animation: sobe 1.1s var(--ease-out) both;
+    animation-delay: calc(0.15s + var(--i, 0) * 0.12s);
+  }
+  @keyframes sobe {
+    from {
+      transform: translateY(105%);
+    }
+  }
+  .luz {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(520px circle at var(--hx, 70%) var(--hy, 30%), rgb(139 92 246 / 0.13), transparent 60%);
+    transition: background 0.2s linear;
   }
   .cargo {
     display: flex;
@@ -300,10 +311,20 @@ const sociais = [
   .hero-console {
     animation-delay: 0.3s;
   }
+  .hero-text > :nth-child(2) {
+    animation: none;
+  }
   @keyframes entra {
     from {
       opacity: 0;
       transform: translateY(16px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glow,
+    .nome :global(.w > span) {
+      animation: none;
     }
   }
 

@@ -249,30 +249,27 @@ textarea {
 
 .section-header {
   display: grid;
-  justify-items: center;
-  gap: 14px;
-  max-width: 640px;
-  margin: 0 auto clamp(48px, 6vw, 72px);
-  text-align: center;
+  gap: 14px 48px;
+  align-items: end;
+  margin: 0 0 clamp(44px, 6vw, 72px);
+  padding-bottom: clamp(20px, 3vw, 28px);
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 900px) {
+  .section-header {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
 }
 .section-header h2 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
   font-weight: 700;
-  letter-spacing: -0.035em;
-}
-.section-header h2::after {
-  content: '';
-  display: block;
-  width: 44px;
-  height: 3px;
-  margin: 18px auto 0;
-  border-radius: 99px;
-  background: linear-gradient(90deg, var(--accent), #c084fc);
+  letter-spacing: -0.05em;
+  line-height: 0.98;
 }
 .section-header p {
   color: var(--text-2);
-  font-size: 1.075rem;
-  max-width: 54ch;
+  font-size: 1.05rem;
+  max-width: 46ch;
 }
 
 /* =====================================================================
@@ -380,7 +377,7 @@ textarea {
   gap: 4px;
   width: fit-content;
   max-width: 100%;
-  margin: 0 auto 40px;
+  margin: 0 0 40px;
   padding: 5px;
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -445,6 +442,16 @@ textarea {
   opacity: 0;
   transform: translate3d(0, 40px, 0);
 }
+.anima:not(.anima-ok) .reveal {
+  /* segurança: se o script de animações não carregar, mostra tudo depois de 3 s */
+  animation: mostra 0.6s 3s forwards;
+}
+@keyframes mostra {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 .anima .reveal[data-anim='left']:not(.is-in) {
   transform: translate3d(-56px, 0, 0);
 }
@@ -462,12 +469,38 @@ textarea {
   transform: translate3d(0, 20px, 0);
 }
 
-/* sublinhado do título cresce quando o cabeçalho aparece */
-.section-header h2::after {
-  transition: width 0.9s var(--ease-out) 0.25s;
+/* Palavras que sobem de dentro de uma "máscara" (títulos) */
+.palavras {
+  display: inline;
 }
-.anima .section-header:not(.visto) h2::after {
-  width: 0;
+.palavras .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.palavras .w > span {
+  display: inline-block;
+  transition: transform 1s var(--ease-out);
+  transition-delay: calc(var(--d, 0ms) + var(--i, 0) * 70ms);
+}
+.anima .reveal[data-anim='words']:not(.is-in) {
+  opacity: 1;
+  transform: none;
+}
+.anima .reveal:not(.is-in) .palavras .w > span {
+  transform: translateY(105%);
+}
+
+/* Inclinação 3D que segue o mouse (data-tilt) */
+[data-tilt] {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px));
+  transition: transform 0.5s var(--ease-out);
+  will-change: transform;
+}
+[data-tilt].inclinando {
+  transition: transform 0.12s linear;
 }
 
 /* Barra de progresso de leitura e botão de voltar ao topo */
@@ -542,15 +575,37 @@ textarea {
   opacity: 1;
 }
 
+/* Quem pediu "reduzir movimento" no sistema recebe só fades curtos, sem deslocamentos */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+  .anima .reveal:not(.is-in),
+  .anima .reveal[data-anim]:not(.is-in) {
+    transform: none !important;
+    filter: none !important;
   }
+  .anima .reveal {
+    transition-duration: 0.6s;
+  }
+  .anima .reveal:not(.is-in) .palavras .w > span {
+    transform: none;
+  }
+  [data-tilt] {
+    transform: none !important;
+  }
+}
+
+/* Textura de grão bem sutil sobre a página */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme='light'] body::after {
+  opacity: 0.03;
 }

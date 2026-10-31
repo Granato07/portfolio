@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import Palavras from './Palavras.astro';
 import TechIcon from './TechIcon.astro';
 import ProjectCover from './ProjectCover.astro';
 import { foto } from '../lib/fotos';
@@ -15,9 +16,9 @@ const maxTags = (destaque?: boolean) => (destaque ? 5 : 3);
 ---
 <section id="projetos" class="section section-alt">
   <div class="wrap">
-    <header class="section-header reveal" data-visto>
-      <h2>{p.titulo}</h2>
-      <p>{p.subtitulo}</p>
+    <header class="section-header reveal" data-anim="words">
+      <h2><Palavras texto={p.titulo} /></h2>
+      <p class="reveal" data-anim="fade" style="--d: 300ms">{p.subtitulo}</p>
     </header>
 
     <div class="tabs reveal" data-anim="fade" role="group" aria-label={p.titulo} data-filtros data-um={p.contagemUm} data-varios={p.contagemVarios}>
@@ -34,7 +35,7 @@ const maxTags = (destaque?: boolean) => (destaque ? 5 : 3);
         const extras = proj.stack.length - max;
         return (
           <li class:list={['item reveal', { destaque: proj.destaque }]} style={`--d: ${(i % 2) * 130}ms`} data-categorias={proj.categorias.join(' ')}>
-            <article class="card" data-brilho>
+            <article class="card" data-brilho data-tilt>
               <div class="card-capa">
                 {img ? <Image src={img} alt="" widths={[480, 800]} sizes="(min-width: 1024px) 560px, 100vw" loading="lazy" /> : <ProjectCover capa={proj.capa} grande={proj.destaque} />}
                 {proj.destaque && <span class="estrela"><Icon name="star" size={13} />{c.lang === 'pt' ? 'Destaque' : 'Featured'}</span>}
@@ -160,7 +161,7 @@ const maxTags = (destaque?: boolean) => (destaque ? 5 : 3);
       box-shadow 0.3s var(--ease);
   }
   .card:hover {
-    transform: translateY(-4px);
+    --ty: -4px;
     border-color: var(--accent-line);
     box-shadow: var(--glow);
   }

@@ -1,0 +1,69 @@
+---
+import type { Conteudo } from '../conteudo';
+
+interface Props {
+  c: Conteudo;
+}
+const { c } = Astro.props;
+---
+<section class="numeros" aria-label={c.lang === 'pt' ? 'Em números' : 'By the numbers'}>
+  <div class="wrap">
+    <dl class="lista">
+      {c.numeros.map((n, i) => (
+        <div class="item reveal" style={`--d: ${i * 110}ms`}>
+          <dt>{n.rotulo}</dt>
+          <dd><span data-contar={n.valor}>{n.valor}</span>{n.sufixo}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .numeros {
+    padding-block: clamp(48px, 7vw, 80px);
+  }
+  .lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+  @media (min-width: 860px) {
+    .lista {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 8px clamp(14px, 2.5vw, 28px);
+    border-left: 1px solid var(--border);
+  }
+  .item:first-child {
+    border-left-color: transparent;
+    padding-left: 0;
+  }
+  @media (max-width: 859px) {
+    .item:nth-child(odd) {
+      border-left-color: transparent;
+      padding-left: 0;
+    }
+    .item:nth-child(n + 3) {
+      margin-top: 28px;
+    }
+  }
+  dd {
+    font-size: clamp(2.8rem, 6vw, 4.4rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  dt {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    max-width: 22ch;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import Palavras from './Palavras.astro';
 import GithubCard from './GithubCard.astro';
 import { perfil } from '../data/comum';
 import { foto } from '../lib/fotos';
@@ -14,9 +15,9 @@ const img = foto(perfil.foto);
 ---
 <section id="sobre" class="section section-alt">
   <div class="wrap">
-    <header class="section-header reveal" data-visto>
-      <h2>{c.sobre.titulo}</h2>
-      <p>{c.sobre.subtitulo}</p>
+    <header class="section-header reveal" data-anim="words">
+      <h2><Palavras texto={c.sobre.titulo} /></h2>
+      <p class="reveal" data-anim="fade" style="--d: 300ms">{c.sobre.subtitulo}</p>
     </header>
 
     <div class="sobre">

@@ -1,0 +1,41 @@
+---
+// Duas linhas de texto grande que deslizam em direções opostas conforme a rolagem.
+interface Props {
+  linhas: [string, string];
+}
+const { linhas } = Astro.props;
+const repetir = (t: string) => Array.from({ length: 4 }, () => t).join(' ');
+---
+<div class="faixa" aria-hidden="true">
+  <p class="linha contorno" data-desliza="-1">{repetir(linhas[0])}</p>
+  <p class="linha cheia" data-desliza="1">{repetir(linhas[1])}</p>
+</div>
+
+<style>
+  .faixa {
+    overflow: hidden;
+    padding-block: clamp(28px, 5vw, 56px);
+    user-select: none;
+  }
+  .linha {
+    white-space: nowrap;
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-weight: 750;
+    letter-spacing: -0.05em;
+    line-height: 1.05;
+    will-change: transform;
+  }
+  .contorno {
+    color: transparent;
+    -webkit-text-stroke: 1.2px var(--border-strong);
+    transform: translateX(-12%);
+  }
+  .cheia {
+    color: var(--surface-2);
+    transform: translateX(-30%);
+  }
+  :global(:root[data-theme='light']) .cheia {
+    color: var(--bg-alt);
+    -webkit-text-stroke: 1px var(--border);
+  }
+</style>

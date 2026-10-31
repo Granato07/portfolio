@@ -54,7 +54,15 @@ export const pt: Conteudo = {
     ctaPrincipal: 'Conheça meus projetos',
     ctaSecundario: 'Baixar currículo',
     rolar: 'Role para ver mais',
+    relogio: 'Agora são {hora} em Santa Rita do Sapucaí, MG',
   },
+  numeros: [
+    { valor: 6, rotulo: 'projetos neste portfólio' },
+    { valor: 10, rotulo: 'linguagens de programação estudadas' },
+    { valor: 12, rotulo: 'testes automatizados na Task API' },
+    { valor: 7, rotulo: 'anos jogando basquete' },
+  ],
+  faixa: ['APIs REST · Node.js · TypeScript · SQL · Testes automatizados ·', 'Back-end · Qualidade · DevOps · Dados · IA generativa ·'],
   console: {
     rotulo: 'Console da API',
     enviar: 'Enviar',

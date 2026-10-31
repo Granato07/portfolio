@@ -10,6 +10,8 @@ import Habilidades from './Habilidades.astro';
 import Conquistas from './Conquistas.astro';
 import Contato from './Contato.astro';
 import Footer from './Footer.astro';
+import Numeros from './Numeros.astro';
+import FaixaRolagem from './FaixaRolagem.astro';
 import type { Conteudo } from '../conteudo';
 
 interface Props {
@@ -22,8 +24,10 @@ const { c } = Astro.props;
   <main id="conteudo">
     <Hero c={c} />
     <TechMarquee />
+    <Numeros c={c} />
     <Sobre c={c} />
     <Experiencia c={c} />
+    <FaixaRolagem linhas={c.faixa} />
     <Projetos c={c} />
     <Habilidades c={c} />
     <Conquistas c={c} />

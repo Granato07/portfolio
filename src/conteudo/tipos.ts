@@ -90,7 +90,11 @@ export interface Conteudo {
     ctaPrincipal: string;
     ctaSecundario: string;
     rolar: string;
+    /** use {hora} onde entra o horário local */
+    relogio: string;
   };
+  numeros: { valor: number; sufixo?: string; rotulo: string }[];
+  faixa: [string, string];
   console: {
     rotulo: string;
     enviar: string;

@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import Palavras from './Palavras.astro';
 import type { Conteudo } from '../conteudo';
 
 interface Props {
@@ -10,9 +11,9 @@ const e = c.experiencia;
 ---
 <section id="experiencia" class="section">
   <div class="wrap">
-    <header class="section-header reveal" data-visto>
-      <h2>{e.titulo}</h2>
-      <p>{e.subtitulo}</p>
+    <header class="section-header reveal" data-anim="words">
+      <h2><Palavras texto={e.titulo} /></h2>
+      <p class="reveal" data-anim="fade" style="--d: 300ms">{e.subtitulo}</p>
     </header>
 
     <ol class="linha" data-visto>

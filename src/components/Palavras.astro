@@ -1,0 +1,16 @@
+---
+// Quebra um texto em palavras para animar uma por uma (ver .palavras em global.css).
+interface Props {
+  texto: string;
+  inicio?: number;
+}
+const { texto, inicio = 0 } = Astro.props;
+const palavras = texto.split(' ');
+---
+<span class="palavras" aria-label={texto}>
+  {palavras.map((p, i) => (
+    <>
+      <span class="w" aria-hidden="true"><span style={`--i:${i + inicio}`}>{p}</span></span>{i < palavras.length - 1 ? ' ' : ''}
+    </>
+  ))}
+</span>

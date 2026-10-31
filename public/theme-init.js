@@ -8,4 +8,6 @@
     if (salvo === 'light' || salvo === 'dark') tema = salvo;
   } catch (e) {}
   document.documentElement.setAttribute('data-theme', tema);
+  // Esconde os elementos animados desde o primeiro quadro (o script de animações revela)
+  if ('IntersectionObserver' in window) document.documentElement.classList.add('anima');
 })();

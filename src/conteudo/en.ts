@@ -51,7 +51,15 @@ export const en: Conteudo = {
     ctaPrincipal: 'See my projects',
     ctaSecundario: 'Download resume',
     rolar: 'Scroll to see more',
+    relogio: "It's {hora} in Santa Rita do Sapucaí, Brazil",
   },
+  numeros: [
+    { valor: 6, rotulo: 'projects in this portfolio' },
+    { valor: 10, rotulo: 'programming languages studied' },
+    { valor: 12, rotulo: 'automated tests in the Task API' },
+    { valor: 7, rotulo: 'years playing basketball' },
+  ],
+  faixa: ['REST APIs · Node.js · TypeScript · SQL · Automated testing ·', 'Back-end · Quality · DevOps · Data · Generative AI ·'],
   console: {
     rotulo: 'API console',
     enviar: 'Send',

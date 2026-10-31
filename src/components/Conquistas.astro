@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import Palavras from './Palavras.astro';
 import { foto } from '../lib/fotos';
 import type { Conteudo } from '../conteudo';
 
@@ -12,9 +13,9 @@ const q = c.conquistas;
 ---
 <section id="conquistas" class="section section-alt">
   <div class="wrap">
-    <header class="section-header reveal" data-visto>
-      <h2>{q.titulo}</h2>
-      <p>{q.subtitulo}</p>
+    <header class="section-header reveal" data-anim="words">
+      <h2><Palavras texto={q.titulo} /></h2>
+      <p class="reveal" data-anim="fade" style="--d: 300ms">{q.subtitulo}</p>
     </header>
 
     <div class="carrossel" data-carrossel>
@@ -85,7 +86,7 @@ const q = c.conquistas;
   .controles {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 16px;
     margin-bottom: 24px;
   }
