@@ -148,9 +148,9 @@ const outro = c.lang === 'pt' ? 'en' : 'pt';
     min-width: 40px;
     height: 40px;
     padding: 0 10px;
-    border-radius: var(--r-s);
-    border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    border-radius: 10px;
+    border: 0;
+    background: transparent;
     color: var(--text-2);
     font-size: 0.8rem;
     font-weight: 600;
@@ -162,7 +162,7 @@ const outro = c.lang === 'pt' ? 'en' : 'pt';
   }
   .action:hover {
     color: var(--text);
-    border-color: var(--border-strong);
+    background: var(--surface);
   }
   .action :global(.icon) {
     flex: none;
