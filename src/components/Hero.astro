@@ -27,10 +27,7 @@ const sociais = [
 
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="selo">
-        <span class="selo-dot" aria-hidden="true"></span>
-        <span data-relogio={c.hero.relogio} data-lang={c.htmlLang}>{c.hero.selo}</span>
-      </p>
+      <p class="selo">{c.hero.selo}</p>
       <h1>
         <span class="nome"><Palavras texto={primeiro} /></span>
         <span class="nome"><Palavras texto={resto.join(' ')} inicio={1} /></span>
@@ -66,10 +63,6 @@ const sociais = [
     </div>
   </div>
 
-  <a class="rolar" href="#sobre">
-    <span class="rato" aria-hidden="true"><span></span></span>
-    <span class="sr-only">{c.hero.rolar}</span>
-  </a>
 </section>
 
 <style>

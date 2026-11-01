@@ -38,7 +38,6 @@ const maxTags = (destaque?: boolean) => (destaque ? 5 : 3);
             <article class="card" data-brilho data-tilt>
               <div class="card-capa">
                 {img ? <Image src={img} alt="" widths={[480, 800]} sizes="(min-width: 1024px) 560px, 100vw" loading="lazy" /> : <ProjectCover capa={proj.capa} grande={proj.destaque} />}
-                {proj.destaque && <span class="estrela"><Icon name="star" size={13} />{c.lang === 'pt' ? 'Destaque' : 'Featured'}</span>}
               </div>
               <div class="card-corpo">
                 <p class="card-meta">
