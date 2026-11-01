@@ -81,7 +81,7 @@ const maxTags = (destaque?: boolean) => (destaque ? 5 : 3);
     <dialog class="modal" id={`projeto-${proj.id}`} aria-labelledby={`projeto-${proj.id}-titulo`} data-modal>
       <div class="modal-caixa">
         <button type="button" class="modal-fechar" data-fechar aria-label={c.ui.fechar}><Icon name="x" size={20} /></button>
-        <div class="modal-capa"><ProjectCover capa={proj.capa} grande /></div>
+        <div class="modal-capa">{foto(proj.foto) ? <Image src={foto(proj.foto)!} alt="" widths={[640, 960]} sizes="(min-width: 760px) 720px, 100vw" /> : <ProjectCover capa={proj.capa} grande />}</div>
         <div class="modal-corpo">
           <p class="card-meta">
             <span>{proj.contexto}</span>
@@ -300,6 +300,12 @@ const maxTags = (destaque?: boolean) => (destaque ? 5 : 3);
   .modal-capa {
     height: 250px;
     border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .modal-capa :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .modal-corpo {
     padding: 26px clamp(20px, 4vw, 34px) 32px;
