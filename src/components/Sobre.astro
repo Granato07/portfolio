@@ -58,16 +58,6 @@ const img = foto(perfil.foto);
             </div>
           ))}
         </dl>
-
-        <div class="acoes">
-          <a class="btn btn-primary" href={perfil.curriculo[c.lang]} download>
-            {c.ui.baixarCv}
-          </a>
-          <a class="btn btn-secondary" href="#contato">
-            <Icon name="mail" size={17} />
-            {c.sobre.ctaContato}
-          </a>
-        </div>
       </div>
     </div>
 
@@ -211,11 +201,5 @@ const img = foto(perfil.foto);
     color: var(--text);
     font-weight: 550;
     font-size: 0.95rem;
-  }
-  .acoes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 8px;
   }
 </style>
