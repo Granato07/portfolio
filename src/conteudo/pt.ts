@@ -433,7 +433,7 @@ export const pt: Conteudo = {
         quando: '7 anos de quadra',
         texto: 'Representei Muzambinho em competições estaduais de basquete e conquistei títulos com o time.',
         icone: 'trophy',
-        foto: '',
+        foto: 'basquete-muzambinho.jpg',
       },
       {
         titulo: '4º lugar nos JUBs',

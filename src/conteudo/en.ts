@@ -421,7 +421,7 @@ export const en: Conteudo = {
         quando: '7 years on the court',
         texto: 'Represented Muzambinho in state basketball competitions and won titles with the team.',
         icone: 'trophy',
-        foto: '',
+        foto: 'basquete-muzambinho.jpg',
       },
       {
         titulo: '4th place at the JUBs',

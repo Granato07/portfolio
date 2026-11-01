@@ -13,7 +13,7 @@ export const perfil = {
   nomeCompleto: 'Daniel Granato Botelho Poscidonio',
   iniciais: 'DG',
   // Foto da seção "Sobre" (formato retrato). Ex.: 'perfil.jpg' em src/assets/fotos/
-  foto: '',
+  foto: 'perfil.jpg',
   // Currículos para download (coloque os PDFs em public/).
   // Enquanto não houver versão em inglês, as duas apontam para o mesmo arquivo.
   curriculo: {
