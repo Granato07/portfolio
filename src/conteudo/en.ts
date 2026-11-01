@@ -381,7 +381,7 @@ export const en: Conteudo = {
         quando: '2022',
         texto: 'Led the chapter during my term, running meetings, the treasury, events and community projects.',
         icone: 'award',
-        foto: '',
+        foto: 'mestre-conselheiro.jpg',
       },
       {
         titulo: 'State basketball titles',
@@ -397,7 +397,7 @@ export const en: Conteudo = {
         quando: 'Esports',
         texto: 'Competed in the esports division of the Brazilian University Games and finished fourth.',
         icone: 'medal',
-        foto: '',
+        foto: 'jubs-2025.jpg',
       },
       {
         titulo: 'College basketball',
@@ -405,7 +405,7 @@ export const en: Conteudo = {
         quando: 'Current',
         texto: "I play for Inatel's basketball team in university competitions.",
         icone: 'trophy',
-        foto: '',
+        foto: 'basquete-universitario.jpg',
       },
       {
         titulo: 'Cybersecurity program',

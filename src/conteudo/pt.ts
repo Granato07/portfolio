@@ -393,7 +393,7 @@ export const pt: Conteudo = {
         quando: '2022',
         texto: 'Liderei o capítulo durante o mandato, cuidando de reuniões, tesouraria, eventos e projetos sociais.',
         icone: 'award',
-        foto: '',
+        foto: 'mestre-conselheiro.jpg',
       },
       {
         titulo: 'Títulos estaduais de basquete',
@@ -409,7 +409,7 @@ export const pt: Conteudo = {
         quando: 'E-sports',
         texto: 'Competi na modalidade de e-sports dos Jogos Universitários Brasileiros e terminei em quarto lugar.',
         icone: 'medal',
-        foto: '',
+        foto: 'jubs-2025.jpg',
       },
       {
         titulo: 'Basquete universitário',
@@ -417,7 +417,7 @@ export const pt: Conteudo = {
         quando: 'Atual',
         texto: 'Jogo pelo time de basquete da Atlética do Inatel nas competições universitárias.',
         icone: 'trophy',
-        foto: '',
+        foto: 'basquete-universitario.jpg',
       },
       {
         titulo: 'Escolinha de cibersegurança',
