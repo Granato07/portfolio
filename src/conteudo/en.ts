@@ -47,7 +47,7 @@ export const en: Conteudo = {
     selo: 'Software Engineering at Inatel',
     cargo: 'Back-end Developer',
     texto:
-      'I build APIs with Node.js and TypeScript, write the tests that prove they work, and use generative AI to ship faster.',
+      'I build APIs, test what I build, and I\'ve been digging deeper into data and security.',
     ctaPrincipal: 'See my projects',
     ctaSecundario: 'Download resume',
     rolar: 'Scroll to see more',
@@ -82,11 +82,6 @@ export const en: Conteudo = {
         ai: ['Claude', 'ChatGPT', 'Gemini'],
         learning: ['AWS'],
       },
-      '/v1/projects': [
-        { name: 'Task API', type: 'REST API', routes: 6 },
-        { name: 'QA SauceDemo', type: 'QA', test_cases: 8, bugs: 3 },
-        { name: 'CarecaHub', type: 'team API', team: 6 },
-      ],
       '/v1/now': {
         studying: 'Software Engineering, 6th semester',
         learning: 'AWS',
@@ -108,8 +103,8 @@ export const en: Conteudo = {
     titulo: 'About me',
     subtitulo: 'Back-end, software quality and generative AI, every day.',
     paragrafos: [
-      "I'm Daniel, a Software Engineering student at Inatel in Santa Rita do Sapucaí, Brazil's Electronics Valley. I work mostly on the back end: REST APIs with Node.js and TypeScript, SQL databases and automated tests.",
-      'I like software you can trust. That is why my projects ship with tests, continuous integration and documentation, and I spend as much time hunting bugs as writing code. I use generative AI every day to code and learn faster, and I review and understand everything I deliver.',
+      "I'm Daniel, a Software Engineering student at Inatel in Santa Rita do Sapucaí, Brazil's Electronics Valley. I work mostly on the back end, building REST APIs with Node.js and TypeScript, working with SQL databases and writing automated tests.",
+      'I like reliable software, so in my projects I set up testing environments and organized documentation, which makes consistent, standardized continuous integration possible. I spend as much time hunting bugs as writing code. I use generative AI every day to code and learn faster, and I review and understand everything I deliver.',
       'Away from the keyboard, I have played basketball for seven years, competed in esports at the Brazilian University Games, and learned leadership as Master Councilor of the Order of DeMolay.',
     ],
     focos: [

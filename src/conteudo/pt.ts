@@ -50,7 +50,7 @@ export const pt: Conteudo = {
     selo: 'Engenharia de Software no Inatel',
     cargo: 'Desenvolvedor Back-end',
     texto:
-      'Construo APIs em Node.js e TypeScript, escrevo os testes que provam que elas funcionam e uso IA generativa para entregar com mais velocidade.',
+      'Crio APIs, testo o que construo e venho me aprofundando em dados e segurança.',
     ctaPrincipal: 'Conheça meus projetos',
     ctaSecundario: 'Baixar currículo',
     rolar: 'Role para ver mais',
@@ -85,11 +85,6 @@ export const pt: Conteudo = {
         ia: ['Claude', 'ChatGPT', 'Gemini'],
         estudando: ['AWS'],
       },
-      '/v1/projetos': [
-        { nome: 'Task API', tipo: 'API REST', rotas: 6 },
-        { nome: 'QA SauceDemo', tipo: 'QA', casos_de_teste: 8, bugs: 3 },
-        { nome: 'CarecaHub', tipo: 'API em equipe', equipe: 6 },
-      ],
       '/v1/agora': {
         estudando: 'Engenharia de Software, 6º período',
         aprendendo: 'AWS',
@@ -111,8 +106,8 @@ export const pt: Conteudo = {
     titulo: 'Sobre mim',
     subtitulo: 'Back-end, qualidade de software e IA generativa no dia a dia.',
     paragrafos: [
-      'Sou o Daniel, estudante de Engenharia de Software no Inatel, em Santa Rita do Sapucaí, o Vale da Eletrônica. Trabalho principalmente com back-end: APIs REST em Node.js e TypeScript, bancos SQL e testes automatizados.',
-      'Gosto de software em que dá para confiar. Por isso meus projetos vêm com testes, integração contínua e documentação, e passo tanto tempo procurando bugs quanto escrevendo código. Uso IA generativa no dia a dia para programar e estudar mais rápido, revisando e entendendo tudo o que entrego.',
+      'Sou o Daniel, estudante de Engenharia de Software no Inatel, em Santa Rita do Sapucaí, o Vale da Eletrônica. Trabalho principalmente com back-end, desenvolvendo APIs REST em Node.js e TypeScript, usando bancos SQL e escrevendo testes automatizados.',
+      'Gosto de softwares confiáveis, por isso, em meus projetos, busco implementar ambientes de testes e documentações organizadas, para que assim seja possível executar uma integração contínua e padronizada. Passo tanto tempo procurando bugs quanto escrevendo código. Uso IA generativa no dia a dia para programar e estudar mais rápido, revisando e entendendo tudo o que entrego.',
       'Fora do código, jogo basquete há sete anos, competi em e-sports nos Jogos Universitários Brasileiros e aprendi a liderar como Mestre Conselheiro na Ordem DeMolay.',
     ],
     focos: [
