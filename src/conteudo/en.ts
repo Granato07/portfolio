@@ -203,7 +203,7 @@ export const en: Conteudo = {
         periodo: '2026',
         categorias: ['ia', 'backend'],
         destaque: true,
-        foto: 'radar-avaliacoes.jpg',
+        foto: 'projeto-radar.jpg',
         resumo:
           'Analyzes customer reviews with two models side by side: a Machine Learning classifier I trained and an LLM with structured output. It shows when generative AI is worth paying for and when a simple model is enough.',
         detalhes: [
@@ -230,6 +230,7 @@ export const en: Conteudo = {
       },
       {
         id: 'task-api',
+        foto: 'projeto-task-api.jpg',
         nome: 'Task API',
         contexto: 'Personal project',
         periodo: '2026',
@@ -260,6 +261,7 @@ export const en: Conteudo = {
       },
       {
         id: 'qa-saucedemo',
+        foto: 'projeto-qa-saucedemo.jpg',
         nome: 'QA on SauceDemo',
         contexto: 'Software quality',
         periodo: '2026',
@@ -290,6 +292,7 @@ export const en: Conteudo = {
       },
       {
         id: 'carecahub',
+        foto: 'projeto-carecahub.jpg',
         nome: 'CarecaHub',
         contexto: 'Academic, team of 6',
         periodo: '2026',
@@ -313,6 +316,7 @@ export const en: Conteudo = {
       },
       {
         id: 'spotify',
+        foto: 'projeto-spotify.jpg',
         nome: 'Spotify data analysis',
         contexto: 'Academic, team of 3',
         periodo: '2026',
@@ -333,6 +337,7 @@ export const en: Conteudo = {
       },
       {
         id: 's01',
+        foto: 'projeto-s01.jpg',
         nome: 'Programming paradigms',
         contexto: 'Academic',
         periodo: '',
@@ -363,6 +368,7 @@ export const en: Conteudo = {
       },
       {
         id: 'ctf',
+        foto: 'projeto-ctf.jpg',
         nome: 'CTF write-ups',
         contexto: "Inatel's cybersecurity program",
         periodo: '2026',
