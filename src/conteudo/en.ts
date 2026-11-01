@@ -121,7 +121,7 @@ export const en: Conteudo = {
     fatos: [
       { rotulo: 'Based in', valor: 'Santa Rita do Sapucaí, Brazil' },
       { rotulo: 'Education', valor: 'Software Engineering, Inatel' },
-      { rotulo: 'Languages', valor: 'Portuguese, English (B2), basic Spanish' },
+      { rotulo: 'Languages', valor: 'Portuguese, English (B1), basic Spanish' },
     ],
     ctaContato: 'Get in touch',
     fotoAlt: 'Photo of Daniel Granato',

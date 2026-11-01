@@ -124,7 +124,7 @@ export const pt: Conteudo = {
     fatos: [
       { rotulo: 'Base', valor: 'Santa Rita do Sapucaí, MG' },
       { rotulo: 'Formação', valor: 'Engenharia de Software, Inatel' },
-      { rotulo: 'Idiomas', valor: 'Português, inglês (B2) e espanhol básico' },
+      { rotulo: 'Idiomas', valor: 'Português, inglês (B1) e espanhol básico' },
     ],
     ctaContato: 'Entrar em contato',
     fotoAlt: 'Foto de Daniel Granato',
