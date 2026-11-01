@@ -19,7 +19,6 @@ const sociais = [
 <section id="inicio" class="hero">
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="selo">{c.hero.selo}</p>
       <h1>
         <span class="nome"><Palavras texto={primeiro} /></span>
         <span class="nome"><Palavras texto={resto.join(' ')} inicio={1} /></span>
@@ -74,16 +73,9 @@ const sociais = [
     }
   }
 
-  .selo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-2);
-    font-size: 0.95rem;
-  }
 
   h1 {
-    margin-top: 26px;
+    margin-top: 0;
     font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 0.95;
@@ -106,20 +98,12 @@ const sociais = [
   .cargo {
     display: flex;
     align-items: center;
-    gap: 14px;
     margin-top: 24px;
     font-size: clamp(1.25rem, 2.3vw, 1.6rem);
     font-weight: 550;
     letter-spacing: -0.02em;
     line-height: 1.2;
     color: var(--text);
-  }
-  .cargo::before {
-    content: '';
-    width: 32px;
-    height: 2px;
-    border-radius: 2px;
-    background: var(--accent);
   }
   .texto {
     margin-top: 18px;
