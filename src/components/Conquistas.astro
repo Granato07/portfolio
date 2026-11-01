@@ -30,7 +30,7 @@ const q = c.conquistas;
           const img = foto(item.foto);
           return (
             <li class="slide reveal" data-anim="right" style={`--d: ${Math.min(i, 3) * 120}ms`}>
-              <article class="conquista" data-brilho>
+              <article class="conquista">
                 <div class="foto">
                   {img ? (
                     <Image src={img} alt={item.titulo} widths={[420, 720]} sizes="(min-width: 1024px) 380px, 85vw" loading="lazy" />
@@ -157,13 +157,10 @@ const q = c.conquistas;
     border-radius: var(--r-xl);
     background: var(--surface);
     overflow: hidden;
-    transition:
-      border-color 0.3s var(--ease),
-      transform 0.3s var(--ease);
+    transition: border-color 0.15s ease;
   }
   .conquista:hover {
-    border-color: var(--accent-line);
-    transform: translateY(-3px);
+    border-color: var(--border-strong);
   }
   .foto {
     position: relative;
@@ -182,11 +179,7 @@ const q = c.conquistas;
     display: grid;
     place-items: center;
     color: var(--accent-text);
-    background:
-      radial-gradient(circle at 50% 55%, rgb(139 92 246 / 0.28), transparent 46%),
-      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 24px 24px,
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 24px 24px,
-      var(--surface-2);
+    background: var(--surface-2);
   }
   .foto-vazia :global(.icon) {
     stroke-width: 1.3;
@@ -196,8 +189,8 @@ const q = c.conquistas;
     left: 14px;
     bottom: 14px;
     padding: 4px 11px;
-    border-radius: 999px;
-    background: rgb(124 58 237 / 0.92);
+    border-radius: var(--r-s);
+    background: rgb(90 63 168 / 0.95);
     color: #fff;
     font-size: 0.76rem;
     font-weight: 600;
@@ -232,7 +225,7 @@ const q = c.conquistas;
   .pontos span {
     width: 8px;
     height: 8px;
-    border-radius: 99px;
+    border-radius: 2px;
     background: var(--border-strong);
     transition:
       width 0.25s var(--ease),
@@ -249,9 +242,7 @@ const q = c.conquistas;
     padding: clamp(20px, 3vw, 30px);
     border: 1px solid var(--border);
     border-radius: var(--r-xl);
-    background:
-      radial-gradient(100% 120% at 100% 0%, rgb(124 58 237 / 0.1), transparent 55%),
-      var(--surface);
+    background: var(--surface);
   }
   .cert-head {
     display: flex;

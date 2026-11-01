@@ -19,7 +19,6 @@ const sociais = [
     <div class="topo">
       <div class="marca">
         <a class="logo" href="#inicio">
-          <span class="logo-mark" aria-hidden="true">{perfil.iniciais}</span>
           <span>{perfil.nome}</span>
         </a>
         <p>{c.rodape.frase}</p>
@@ -69,7 +68,7 @@ const sociais = [
     width: min(560px, 80%);
     height: 1px;
     translate: -50% 0;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background: var(--border);
   }
   .topo {
     display: flex;
@@ -91,18 +90,6 @@ const sociais = [
     font-weight: 650;
     font-size: 1.05rem;
     text-decoration: none;
-  }
-  .logo-mark {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--accent-strong);
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 700;
   }
   .marca p {
     color: var(--text-2);

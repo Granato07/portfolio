@@ -20,7 +20,7 @@ const e = c.experiencia;
       {e.itens.map((item, i) => (
         <li class:list={['marco reveal', i % 2 === 0 ? 'esq' : 'dir']} data-anim={i % 2 === 0 ? 'left' : 'right'}>
           <span class:list={['no', { 'no-atual': item.atual }]} aria-hidden="true"></span>
-          <article class="card" data-brilho>
+          <article class="card">
             <header class="card-head">
               <span class="card-icone"><Icon name={item.icone} size={20} /></span>
               <div>
@@ -106,9 +106,7 @@ const e = c.experiencia;
     background: var(--accent);
   }
   .no-atual {
-    box-shadow:
-      0 0 0 5px var(--bg),
-      0 0 0 10px rgb(139 92 246 / 0.18);
+    box-shadow: 0 0 0 5px var(--bg);
   }
 
   @media (min-width: 900px) {
@@ -194,7 +192,7 @@ const e = c.experiencia;
   .badge {
     flex: none;
     padding: 3px 10px;
-    border-radius: 999px;
+    border-radius: var(--r-s);
     border: 1px solid var(--border-strong);
     color: var(--text-2);
     font-size: 0.75rem;

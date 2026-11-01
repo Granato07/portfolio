@@ -26,7 +26,7 @@ const canais = [
     <ul class="canais">
       {canais.map((canal, i) => (
         <li class="reveal" style={`--d: ${i * 90}ms`}>
-          <a class="canal" data-brilho href={canal.href} target={canal.externo ? '_blank' : undefined} rel={canal.externo ? 'noopener noreferrer' : undefined}>
+          <a class="canal" href={canal.href} target={canal.externo ? '_blank' : undefined} rel={canal.externo ? 'noopener noreferrer' : undefined}>
             <span class="canal-icone"><Icon name={canal.icone} size={22} /></span>
             <span class="canal-rotulo">{canal.rotulo}</span>
             <span class="canal-valor">{canal.valor}</span>
@@ -55,7 +55,6 @@ const canais = [
           <li><Icon name="languages" size={17} />{c.sobre.fatos[2].valor}</li>
         </ul>
         <a class="btn btn-secondary" href={perfil.curriculo[c.lang]} download>
-          <Icon name="download" size={17} />
           {c.ui.baixarCv}
         </a>
         <div class="info-redes">
@@ -126,15 +125,10 @@ const canais = [
     border-radius: var(--r-xl);
     background: var(--surface);
     text-decoration: none;
-    transition:
-      border-color 0.25s var(--ease),
-      transform 0.25s var(--ease),
-      box-shadow 0.25s var(--ease);
+    transition: border-color 0.15s ease;
   }
   .canal:hover {
-    border-color: var(--accent-line);
-    transform: translateY(-3px);
-    box-shadow: var(--glow);
+    border-color: var(--border-strong);
   }
   .canal-icone {
     display: grid;
@@ -256,17 +250,15 @@ const canais = [
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
-    background:
-      radial-gradient(120% 100% at 0% 0%, rgb(124 58 237 / 0.2), transparent 60%),
-      var(--surface);
+    background: var(--surface);
   }
   .info-icone {
     display: grid;
     place-items: center;
     width: 50px;
     height: 50px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    border-radius: var(--r-m);
+    background: var(--accent-strong);
     color: #fff;
   }
   .info h3 {

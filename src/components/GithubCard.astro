@@ -53,7 +53,7 @@ const data = new Intl.DateTimeFormat(c.htmlLang, { day: 'numeric', month: 'short
     <ul>
       {g.recentes.map((r, i) => (
         <li class="reveal" style={`--d: ${i * 90}ms`}>
-          <a href={r.url} target="_blank" rel="noopener noreferrer" data-brilho>
+          <a href={r.url} target="_blank" rel="noopener noreferrer">
             <span class="repo-top">
               <Icon name="folder-git-2" size={16} />
               <span class="repo-nome">{r.nome}</span>

@@ -90,11 +90,7 @@ const destacar = (linha: string) =>
     flex-direction: column;
     height: 100%;
     min-height: 200px;
-    background:
-      radial-gradient(120% 90% at 100% 0%, rgb(124 58 237 / 0.22), transparent 60%),
-      linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px) 0 0 / 22px 22px,
-      linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px) 0 0 / 22px 22px,
-      var(--code-bg);
+    background: var(--code-bg);
     color: var(--code-text);
     font-family: var(--font-mono);
     font-size: 0.74rem;
@@ -181,7 +177,7 @@ const destacar = (linha: string) =>
   }
   .m-post {
     background: rgb(167 139 250 / 0.16);
-    color: #c4b5fd;
+    color: #c9bbf2;
   }
   .m-put {
     background: rgb(251 191 36 / 0.14);
@@ -234,7 +230,7 @@ const destacar = (linha: string) =>
     background: rgb(167 139 250 / 0.2);
   }
   .arvore .pasta {
-    color: #ddd6fe;
+    color: #e4dcf8;
     font-weight: 600;
   }
   .arvore .sub {
@@ -254,7 +250,7 @@ const destacar = (linha: string) =>
     gap: 2px;
     padding: 10px 12px;
     border: 1px solid var(--code-line);
-    border-radius: 10px;
+    border-radius: var(--r-m);
     background: rgb(255 255 255 / 0.02);
     counter-increment: etapa;
   }
@@ -290,7 +286,7 @@ const destacar = (linha: string) =>
     color: #4a4a5c;
   }
   .codigo :global(.k) {
-    color: #c4b5fd;
+    color: #c9bbf2;
     font-weight: 500;
   }
   .codigo :global(.f) {

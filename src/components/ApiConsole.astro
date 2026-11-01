@@ -65,10 +65,7 @@ const dados = {
     color: var(--code-text);
     border: 1px solid var(--code-line);
     border-radius: var(--r-xl);
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.05) inset,
-      0 40px 80px -40px rgb(0 0 0 / 0.8),
-      0 0 0 1px rgb(139 92 246 / 0.12);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
     font-family: var(--font-mono);
     font-size: 0.8rem;
     overflow: hidden;
@@ -175,7 +172,7 @@ const dados = {
     padding: 0 14px;
     border: 0;
     border-radius: 9px;
-    background: #7c3aed;
+    background: #6d4fc2;
     color: #fff;
     font-family: var(--font-sans);
     font-size: 0.85rem;
@@ -201,7 +198,7 @@ const dados = {
   }
   .c-route {
     padding: 5px 11px;
-    border-radius: 999px;
+    border-radius: var(--r-s);
     border: 1px solid var(--code-line);
     background: transparent;
     color: var(--code-dim);
@@ -220,7 +217,7 @@ const dados = {
   .c-route[aria-pressed='true'] {
     color: #ede9fe;
     border-color: rgb(167 139 250 / 0.5);
-    background: rgb(139 92 246 / 0.14);
+    background: rgb(155 130 224 / 0.14);
   }
 
   .c-response {
@@ -427,7 +424,7 @@ const dados = {
 
     console.log(
       '%cOlá, dev! / Hi, dev!%c\nEste site é estático e não guarda nada seu. Tente GET /v1/cafe ou /v1/arremesso no console do topo.\nThis site is static and stores nothing about you. Try GET /v1/coffee or /v1/shot in the hero console.',
-      'font-weight:bold;color:#a78bfa;font-size:14px',
+      'font-weight:bold;color:#b7a4ee;font-size:14px',
       'color:inherit',
     );
   }
