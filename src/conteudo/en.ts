@@ -9,7 +9,7 @@ export const en: Conteudo = {
   htmlLang: 'en',
   ogLocale: 'en_US',
   meta: {
-    titulo: 'Daniel Granato | Back-end Developer',
+    titulo: 'Daniel Granato | Back-end & Generative AI',
     descricao:
       'Portfolio of Daniel Granato, back-end developer and Software Engineering student at Inatel, Brazil. APIs with Node.js and TypeScript, automated testing and generative AI.',
   },
@@ -45,7 +45,7 @@ export const en: Conteudo = {
   },
   hero: {
     selo: 'Software Engineering at Inatel',
-    cargo: 'Back-end Developer',
+    cargo: 'Back-end & Generative AI',
     texto:
       'I build APIs, test what I build, and I\'ve been digging deeper into data and security.',
     ctaPrincipal: 'See my projects',
@@ -69,7 +69,7 @@ export const en: Conteudo = {
     rotas: {
       '/v1/daniel': {
         name: 'Daniel Granato',
-        role: 'Back-end Developer',
+        role: 'Back-end & Generative AI',
         education: 'Software Engineering, Inatel',
         based_in: 'Santa Rita do Sapucaí, Brazil',
         focus: ['REST APIs', 'automated testing', 'generative AI'],

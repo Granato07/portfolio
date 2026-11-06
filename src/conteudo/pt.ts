@@ -12,9 +12,9 @@ export const pt: Conteudo = {
   htmlLang: 'pt-BR',
   ogLocale: 'pt_BR',
   meta: {
-    titulo: 'Daniel Granato | Desenvolvedor Back-end',
+    titulo: 'Daniel Granato | Back-end & IA Generativa',
     descricao:
-      'Portfólio de Daniel Granato, desenvolvedor back-end e estudante de Engenharia de Software no Inatel. APIs em Node.js e TypeScript, testes automatizados e IA generativa.',
+      'Portfólio de Daniel Granato, desenvolvedor back-end com foco em IA generativa e estudante de Engenharia de Software no Inatel. APIs em Node.js e TypeScript, testes automatizados e IA generativa.',
   },
   nav: [
     { id: 'inicio', rotulo: 'Início' },
@@ -48,7 +48,7 @@ export const pt: Conteudo = {
   },
   hero: {
     selo: 'Engenharia de Software no Inatel',
-    cargo: 'Desenvolvedor Back-end',
+    cargo: 'Back-end & IA Generativa',
     texto:
       'Crio APIs, testo o que construo e venho me aprofundando em dados e segurança.',
     ctaPrincipal: 'Conheça meus projetos',
@@ -72,7 +72,7 @@ export const pt: Conteudo = {
     rotas: {
       '/v1/daniel': {
         nome: 'Daniel Granato',
-        cargo: 'Desenvolvedor Back-end',
+        cargo: 'Back-end & IA Generativa',
         formacao: 'Engenharia de Software, Inatel',
         base: 'Santa Rita do Sapucaí, MG, Brasil',
         foco: ['APIs REST', 'testes automatizados', 'IA generativa'],
